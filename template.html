@@ -50,15 +50,35 @@
     flex-direction: column;
     overflow: hidden;
   }
-  #filters { padding: 12px; border-bottom: 1px solid var(--line); overflow-y: auto; max-height: 46vh; }
-  #filters input[type="text"], #filters input[type="number"] {
-    width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; margin-bottom: 8px;
+  #filters { padding: 12px; border-bottom: 1px solid var(--line); overflow-y: auto; max-height: 52vh; }
+  #filters input[type="text"] {
+    width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; margin-bottom: 10px;
   }
-  #filters .row { display: flex; gap: 6px; }
-  #filters .row input { width: 50%; }
   #filters fieldset { border: none; padding: 0; margin: 0 0 8px 0; }
   #filters legend { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 0; margin-bottom: 4px; }
   #filters label { font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; margin-bottom: 4px; }
+
+  .slider-block { margin-bottom: 12px; }
+  .slider-block .sb-title { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 6px; }
+  .dual-slider { position: relative; height: 20px; }
+  .dual-slider .ds-track { position: absolute; top: 8px; left: 0; right: 0; height: 4px; background: var(--line); border-radius: 2px; }
+  .dual-slider .ds-fill { position: absolute; top: 8px; height: 4px; background: var(--accent); border-radius: 2px; }
+  .dual-slider input[type="range"] {
+    position: absolute; top: 0; left: 0; width: 100%; height: 20px; margin: 0;
+    background: transparent; pointer-events: none; -webkit-appearance: none; appearance: none;
+  }
+  .dual-slider input[type="range"]::-webkit-slider-runnable-track { background: transparent; -webkit-appearance: none; }
+  .dual-slider input[type="range"]::-moz-range-track { background: transparent; }
+  .dual-slider input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto; -webkit-appearance: none; appearance: none;
+    width: 15px; height: 15px; border-radius: 50%; background: var(--accent); border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.5); cursor: pointer; margin-top: 2.5px;
+  }
+  .dual-slider input[type="range"]::-moz-range-thumb {
+    pointer-events: auto; width: 15px; height: 15px; border-radius: 50%; background: var(--accent);
+    border: 2px solid #fff; box-shadow: 0 0 2px rgba(0,0,0,.5); cursor: pointer;
+  }
+  .ds-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
 
   #modelList { flex: 1; overflow-y: auto; }
   .model-row { padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
@@ -92,10 +112,6 @@
   #legendControl .lg-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
   #legendControl .lg-line { display: flex; align-items: center; gap: 4px; margin: 4px 0; }
   #legendControl hr { border: none; border-top: 1px solid var(--line); margin: 6px 0; }
-
-  #timeControl { padding: 8px 10px; width: 230px; }
-  #timeControl .tc-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display:flex; justify-content: space-between; }
-  #timeControl input[type="range"] { width: 100%; }
 
   #measureLabel {
     position: absolute; background: rgba(27,31,36,.85); color: #fff; font-size: 11.5px;
@@ -138,10 +154,29 @@
   <div id="sidebar">
     <div id="filters">
       <input type="text" id="searchBox" placeholder="Search event name or author..." />
-      <div class="row">
-        <input type="number" id="magMin" placeholder="Mag min" step="0.1" />
-        <input type="number" id="magMax" placeholder="Mag max" step="0.1" />
+
+      <div class="slider-block">
+        <div class="sb-title">Magnitude</div>
+        <div class="dual-slider">
+          <div class="ds-track"></div>
+          <div class="ds-fill" id="magFill"></div>
+          <input type="range" id="magMinSlider" />
+          <input type="range" id="magMaxSlider" />
+        </div>
+        <div class="ds-labels"><span id="magMinLabel"></span><span id="magMaxLabel"></span></div>
       </div>
+
+      <div class="slider-block">
+        <div class="sb-title">Year</div>
+        <div class="dual-slider">
+          <div class="ds-track"></div>
+          <div class="ds-fill" id="yearFill"></div>
+          <input type="range" id="yearMinSlider" />
+          <input type="range" id="yearMaxSlider" />
+        </div>
+        <div class="ds-labels"><span id="yearMinLabel"></span><span id="yearMaxLabel"></span></div>
+      </div>
+
       <fieldset id="styleFilter">
         <legend>Faulting style</legend>
       </fieldset>
@@ -164,24 +199,52 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const MODELS = __MODELS_JSON__;
-const BUILT_AT = "__BUILT_AT__";
-const MODEL_COUNT = __MODEL_COUNT__;
+const MODELS = [{"schema_version": "1.0.0", "model_id": "arkalochori2021_bonatis_2024", "event": {"event_id": "arkalochori2021", "name": "Arkalochori (Crete) 2021", "origin_time": "2021-09-27T09:17:00Z", "magnitude": 5.9, "magnitude_type": "Mw", "hypocenter": {"latitude": 35.14, "longitude": 25.27, "depth_km": 6.0}, "faulting_style": "normal", "tectonic_setting": "Aegean back-arc extension", "region": "Crete"}, "reference": {"authors": ["Bonatis, P.", "et al."], "year": 2024, "title": "REPLACE_WITH_FULL_CITATION", "journal": "REPLACE_WITH_JOURNAL", "doi": "REPLACE_WITH_DOI", "url": "https://example.org/replace-with-real-link"}, "inversion": {"data_types": ["InSAR", "GNSS"], "method": "linear least squares with Laplacian smoothing", "green_function_model": "Okada uniform elastic half-space", "slip_type": "variable", "smoothing_constraint": true, "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values below are synthetic placeholders for illustrating the schema structure. They are NOT the actual published Bonatis et al. (2024) inversion results. Only the event-level facts stated in the review manuscript (magnitude 5.9, 2021, Arkalochori/Crete, normal faulting, ~1.0 m max slip at shallow depth) are real; replace everything else with verified values (e.g. from the author's supplementary data and NOA/EMSC catalogs) before publishing a real record."}, "fault_segments": [{"segment_id": "seg1", "strike_deg": 105.0, "dip_deg": 55.0, "average_rake_deg": -90.0, "length_km": 8.0, "width_km": 6.0, "top_depth_km": 0.5, "reference_point": {"latitude": 35.145, "longitude": 25.28}, "patch_grid": {"n_along_strike": 4, "n_down_dip": 3, "patch_length_km": 2.0, "patch_width_km": 2.0}, "patches": [{"along_strike_km": 1.0, "down_dip_km": 1.0, "latitude": 35.15, "longitude": 25.255, "depth_km": 1.2, "slip_m": 0.3, "rake_deg": -88}, {"along_strike_km": 3.0, "down_dip_km": 1.0, "latitude": 35.148, "longitude": 25.273, "depth_km": 1.2, "slip_m": 0.55, "rake_deg": -90}, {"along_strike_km": 5.0, "down_dip_km": 1.0, "latitude": 35.146, "longitude": 25.291, "depth_km": 1.2, "slip_m": 0.4, "rake_deg": -91}, {"along_strike_km": 7.0, "down_dip_km": 1.0, "latitude": 35.144, "longitude": 25.309, "depth_km": 1.2, "slip_m": 0.2, "rake_deg": -89}, {"along_strike_km": 1.0, "down_dip_km": 3.0, "latitude": 35.142, "longitude": 25.257, "depth_km": 2.9, "slip_m": 0.6, "rake_deg": -92}, {"along_strike_km": 3.0, "down_dip_km": 3.0, "latitude": 35.14, "longitude": 25.275, "depth_km": 2.9, "slip_m": 1.0, "rake_deg": -90}, {"along_strike_km": 5.0, "down_dip_km": 3.0, "latitude": 35.138, "longitude": 25.293, "depth_km": 2.9, "slip_m": 0.75, "rake_deg": -90}, {"along_strike_km": 7.0, "down_dip_km": 3.0, "latitude": 35.136, "longitude": 25.311, "depth_km": 2.9, "slip_m": 0.35, "rake_deg": -88}, {"along_strike_km": 1.0, "down_dip_km": 5.0, "latitude": 35.134, "longitude": 25.259, "depth_km": 4.5, "slip_m": 0.25, "rake_deg": -87}, {"along_strike_km": 3.0, "down_dip_km": 5.0, "latitude": 35.132, "longitude": 25.277, "depth_km": 4.5, "slip_m": 0.45, "rake_deg": -90}, {"along_strike_km": 5.0, "down_dip_km": 5.0, "latitude": 35.13, "longitude": 25.295, "depth_km": 4.5, "slip_m": 0.3, "rake_deg": -91}, {"along_strike_km": 7.0, "down_dip_km": 5.0, "latitude": 35.128, "longitude": 25.313, "depth_km": 4.5, "slip_m": 0.15, "rake_deg": -89}]}], "summary_metrics": {"max_slip_m": 1.0, "mean_slip_m": 0.44, "rupture_area_km2": 48.0, "seismic_moment_Nm": null}, "model_variant": {"phase": "coseismic"}, "provenance": {"compiled_by": "Bonatis, P.", "date_added": "2026-08-09", "license": "CC-BY-4.0", "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"}}, {"schema_version": "1.0.0", "model_id": "kozanigrevena1995_meyer_1996", "event": {"event_id": "kozanigrevena1995", "name": "Kozani-Grevena 1995", "origin_time": "1995-05-13T08:47:12Z", "magnitude": 6.5, "magnitude_type": "Mw", "hypocenter": {"latitude": 40.149, "longitude": 21.695, "depth_km": 14.0}, "faulting_style": "normal", "tectonic_setting": "Aegean back-arc extension", "region": "Kozani-Grevena, NW Greece"}, "reference": {"authors": ["Meyer, B.", "et al."], "year": 1996, "title": "REPLACE_WITH_FULL_CITATION_FROM_YOUR_REFERENCE_LIST", "journal": "REPLACE_WITH_JOURNAL", "doi": "REPLACE_WITH_DOI", "url": "https://example.org/replace-with-real-link"}, "inversion": {"data_types": ["InSAR", "field_mapping"], "method": "trial-and-error forward modeling", "green_function_model": "Okada uniform elastic half-space", "slip_type": "uniform", "smoothing_constraint": false, "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values are synthetic placeholders for illustrating the schema/UI. They are NOT published inversion results. Event-level facts (magnitude, origin time, hypocenter, faulting style) are from the USGS ANSS catalog (verified via the FDSN event web service). Replace geometry, slip values, and reference metadata with the real published values before treating this as a live record. Reference is real (cited in your manuscript for this event); bibliographic fields (title/journal/DOI) still need to be filled in from your reference list. USGS ANSS lists Mw6.6 for this event vs. Mw6.5 in your manuscript text — normal cross-catalog variation, worth confirming which you want as canonical."}, "fault_segments": [{"segment_id": "seg1", "strike_deg": 125.0, "dip_deg": 40.0, "average_rake_deg": -90.0, "length_km": 20.0, "width_km": 12.0, "top_depth_km": 0.0, "reference_point": {"latitude": 40.16, "longitude": 21.72}}], "summary_metrics": {"max_slip_m": 0.9, "mean_slip_m": 0.9, "rupture_area_km2": 240.0, "seismic_moment_Nm": null}, "model_variant": {"phase": "coseismic"}, "provenance": {"compiled_by": "Bonatis, P.", "date_added": "2026-08-13", "license": "CC-BY-4.0", "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"}}, {"schema_version": "1.0.0", "model_id": "lefkada2015_placeholder_2016", "event": {"event_id": "lefkada2015", "name": "Lefkada (Ionian Sea) 2015", "origin_time": "2015-11-17T07:10:07Z", "magnitude": 6.5, "magnitude_type": "Mw", "hypocenter": {"latitude": 38.67, "longitude": 20.6, "depth_km": 11.0}, "faulting_style": "strike-slip", "tectonic_setting": "Kephalonia-Lefkada Transform Fault Zone", "region": "Ionian Islands"}, "reference": {"authors": ["REPLACE_WITH_AUTHORS"], "year": 2016, "title": "REPLACE_WITH_FULL_CITATION", "journal": "REPLACE_WITH_JOURNAL", "doi": "REPLACE_WITH_DOI", "url": "https://example.org/replace-with-real-link"}, "inversion": {"data_types": ["strong_motion", "GNSS", "InSAR"], "method": "Bayesian", "green_function_model": "layered 1D velocity model", "slip_type": "variable", "smoothing_constraint": true, "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values are synthetic placeholders for illustrating the schema/UI. They are NOT published inversion results. Event-level facts (magnitude, origin time, hypocenter, faulting style) are from the USGS ANSS catalog (verified via the FDSN event web service). Replace geometry, slip values, and reference metadata with the real published values before treating this as a live record."}, "fault_segments": [{"segment_id": "seg1", "strike_deg": 15.0, "dip_deg": 85.0, "average_rake_deg": 175.0, "length_km": 26.0, "width_km": 13.0, "top_depth_km": 1.0, "reference_point": {"latitude": 38.69, "longitude": 20.58}, "patch_grid": {"n_along_strike": 5, "n_down_dip": 3, "patch_length_km": 5.2, "patch_width_km": 4.33}, "patches": [{"along_strike_km": 2.6, "down_dip_km": 2.17, "latitude": 38.5992, "longitude": 20.5511, "depth_km": 3.16, "slip_m": 0.15, "rake_deg": 172.5}, {"along_strike_km": 7.8, "down_dip_km": 2.17, "latitude": 38.6444, "longitude": 20.5666, "depth_km": 3.16, "slip_m": 0.41, "rake_deg": 173.5}, {"along_strike_km": 13.0, "down_dip_km": 2.17, "latitude": 38.6896, "longitude": 20.5821, "depth_km": 3.16, "slip_m": 0.57, "rake_deg": 174.5}, {"along_strike_km": 18.2, "down_dip_km": 2.17, "latitude": 38.7347, "longitude": 20.5976, "depth_km": 3.16, "slip_m": 0.41, "rake_deg": 175.5}, {"along_strike_km": 23.4, "down_dip_km": 2.17, "latitude": 38.7799, "longitude": 20.6132, "depth_km": 3.16, "slip_m": 0.15, "rake_deg": 176.5}, {"along_strike_km": 2.6, "down_dip_km": 6.5, "latitude": 38.5983, "longitude": 20.5553, "depth_km": 7.48, "slip_m": 0.29, "rake_deg": 172.5}, {"along_strike_km": 7.8, "down_dip_km": 6.5, "latitude": 38.6435, "longitude": 20.5708, "depth_km": 7.48, "slip_m": 0.78, "rake_deg": 173.5}, {"along_strike_km": 13.0, "down_dip_km": 6.5, "latitude": 38.6887, "longitude": 20.5863, "depth_km": 7.48, "slip_m": 1.08, "rake_deg": 174.5}, {"along_strike_km": 18.2, "down_dip_km": 6.5, "latitude": 38.7339, "longitude": 20.6018, "depth_km": 7.48, "slip_m": 0.78, "rake_deg": 175.5}, {"along_strike_km": 23.4, "down_dip_km": 6.5, "latitude": 38.779, "longitude": 20.6174, "depth_km": 7.48, "slip_m": 0.29, "rake_deg": 176.5}, {"along_strike_km": 2.6, "down_dip_km": 10.83, "latitude": 38.5975, "longitude": 20.5595, "depth_km": 11.79, "slip_m": 0.09, "rake_deg": 172.5}, {"along_strike_km": 7.8, "down_dip_km": 10.83, "latitude": 38.6426, "longitude": 20.575, "depth_km": 11.79, "slip_m": 0.24, "rake_deg": 173.5}, {"along_strike_km": 13.0, "down_dip_km": 10.83, "latitude": 38.6878, "longitude": 20.5905, "depth_km": 11.79, "slip_m": 0.33, "rake_deg": 174.5}, {"along_strike_km": 18.2, "down_dip_km": 10.83, "latitude": 38.733, "longitude": 20.606, "depth_km": 11.79, "slip_m": 0.24, "rake_deg": 175.5}, {"along_strike_km": 23.4, "down_dip_km": 10.83, "latitude": 38.7781, "longitude": 20.6216, "depth_km": 11.79, "slip_m": 0.09, "rake_deg": 176.5}]}], "summary_metrics": {"max_slip_m": 1.08, "mean_slip_m": 0.393, "rupture_area_km2": 338.0, "seismic_moment_Nm": null}, "model_variant": {"phase": "coseismic"}, "provenance": {"compiled_by": "Bonatis, P.", "date_added": "2026-08-13", "license": "CC-BY-4.0", "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"}}, {"schema_version": "1.0.0", "model_id": "samos2020_placeholder_2021", "event": {"event_id": "samos2020", "name": "Samos (Aegean Sea) 2020", "origin_time": "2020-10-30T11:51:27Z", "magnitude": 7.0, "magnitude_type": "Mw", "hypocenter": {"latitude": 37.8973, "longitude": 26.7838, "depth_km": 21.0}, "faulting_style": "normal", "tectonic_setting": "Aegean back-arc extension", "region": "Samos / Aegean Sea"}, "reference": {"authors": ["REPLACE_WITH_AUTHORS"], "year": 2021, "title": "REPLACE_WITH_FULL_CITATION", "journal": "REPLACE_WITH_JOURNAL", "doi": "REPLACE_WITH_DOI", "url": "https://example.org/replace-with-real-link"}, "inversion": {"data_types": ["InSAR", "GNSS", "teleseismic"], "method": "linear least squares with Laplacian smoothing", "green_function_model": "Okada uniform elastic half-space", "slip_type": "variable", "smoothing_constraint": true, "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values are synthetic placeholders for illustrating the schema/UI. They are NOT published inversion results. Event-level facts (magnitude, origin time, hypocenter, faulting style) are from the USGS ANSS catalog (verified via the FDSN event web service). Replace geometry, slip values, and reference metadata with the real published values before treating this as a live record."}, "fault_segments": [{"segment_id": "seg1", "strike_deg": 280.0, "dip_deg": 35.0, "average_rake_deg": -85.0, "length_km": 42.0, "width_km": 18.0, "top_depth_km": 2.0, "reference_point": {"latitude": 37.93, "longitude": 26.7}, "patch_grid": {"n_along_strike": 5, "n_down_dip": 3, "patch_length_km": 8.4, "patch_width_km": 6.0}, "patches": [{"along_strike_km": 4.2, "down_dip_km": 3.0, "latitude": 37.9254, "longitude": 26.8934, "depth_km": 3.72, "slip_m": 0.23, "rake_deg": -87.5}, {"along_strike_km": 12.6, "down_dip_km": 3.0, "latitude": 37.9386, "longitude": 26.7992, "depth_km": 3.72, "slip_m": 0.6, "rake_deg": -86.5}, {"along_strike_km": 21.0, "down_dip_km": 3.0, "latitude": 37.9518, "longitude": 26.7049, "depth_km": 3.72, "slip_m": 0.83, "rake_deg": -85.5}, {"along_strike_km": 29.4, "down_dip_km": 3.0, "latitude": 37.9648, "longitude": 26.6105, "depth_km": 3.72, "slip_m": 0.6, "rake_deg": -84.5}, {"along_strike_km": 37.8, "down_dip_km": 3.0, "latitude": 37.9778, "longitude": 26.5162, "depth_km": 3.72, "slip_m": 0.23, "rake_deg": -83.5}, {"along_strike_km": 4.2, "down_dip_km": 9.0, "latitude": 37.9689, "longitude": 26.9032, "depth_km": 7.16, "slip_m": 0.42, "rake_deg": -87.5}, {"along_strike_km": 12.6, "down_dip_km": 9.0, "latitude": 37.9821, "longitude": 26.8089, "depth_km": 7.16, "slip_m": 1.13, "rake_deg": -86.5}, {"along_strike_km": 21.0, "down_dip_km": 9.0, "latitude": 37.9953, "longitude": 26.7146, "depth_km": 7.16, "slip_m": 1.57, "rake_deg": -85.5}, {"along_strike_km": 29.4, "down_dip_km": 9.0, "latitude": 38.0084, "longitude": 26.6203, "depth_km": 7.16, "slip_m": 1.13, "rake_deg": -84.5}, {"along_strike_km": 37.8, "down_dip_km": 9.0, "latitude": 38.0214, "longitude": 26.5259, "depth_km": 7.16, "slip_m": 0.42, "rake_deg": -83.5}, {"along_strike_km": 4.2, "down_dip_km": 15.0, "latitude": 38.0124, "longitude": 26.9129, "depth_km": 10.6, "slip_m": 0.13, "rake_deg": -87.5}, {"along_strike_km": 12.6, "down_dip_km": 15.0, "latitude": 38.0257, "longitude": 26.8187, "depth_km": 10.6, "slip_m": 0.35, "rake_deg": -86.5}, {"along_strike_km": 21.0, "down_dip_km": 15.0, "latitude": 38.0388, "longitude": 26.7244, "depth_km": 10.6, "slip_m": 0.48, "rake_deg": -85.5}, {"along_strike_km": 29.4, "down_dip_km": 15.0, "latitude": 38.0519, "longitude": 26.63, "depth_km": 10.6, "slip_m": 0.35, "rake_deg": -84.5}, {"along_strike_km": 37.8, "down_dip_km": 15.0, "latitude": 38.0649, "longitude": 26.5357, "depth_km": 10.6, "slip_m": 0.13, "rake_deg": -83.5}]}], "summary_metrics": {"max_slip_m": 1.57, "mean_slip_m": 0.573, "rupture_area_km2": 756.0, "seismic_moment_Nm": null}, "model_variant": {"phase": "coseismic"}, "provenance": {"compiled_by": "Bonatis, P.", "date_added": "2026-08-13", "license": "CC-BY-4.0", "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"}}];
+const BUILT_AT = "2026-08-14";
+const MODEL_COUNT = 4;
 
 const STYLE_COLORS = {
   "normal": "#2c6fbb",
   "reverse": "#b8433a",
   "strike-slip": "#3a9d5d",
-  "oblique-normal": "#9b59b6",
-  "oblique-reverse": "#d68910",
-  "unknown": "#7f8c8d"
+  "oblique": "#9b59b6"
 };
+const FALLBACK_COLOR = "#7f8c8d";
+
+// Marker size scales continuously with magnitude (radius_px = magnitude * MAG_FACTOR) —
+// a straight multiplicative factor, not stepped/discrete buckets.
+const MAG_FACTOR = 3.2;
+const STAR_MAG_THRESHOLD = 6;
 
 let selectedId = null;
 let eventLayer = null;
 let faultLayer = null;
 let seismicityLayer = L.layerGroup();
-let timeCutoffYear = null; // set after init once min/max years are known
+let magMinVal = null, magMaxVal = null;
+let yearMinVal = null, yearMaxVal = null;
+
+function markerRadius(mag) {
+  return Math.max(mag, 0) * MAG_FACTOR;
+}
+
+// 5-pointed star icon (used for M >= STAR_MAG_THRESHOLD events) as an inline SVG,
+// sized to match the same diameter a circle marker of that magnitude would have.
+function starIconHtml(color, sizePx, selected) {
+  const s = Math.max(sizePx, 12);
+  const cx = s / 2, cy = s / 2;
+  const outerR = s / 2 - 1.5;
+  const innerR = outerR * 0.42;
+  const pts = [];
+  for (let i = 0; i < 10; i++) {
+    const r = (i % 2 === 0) ? outerR : innerR;
+    const angle = -Math.PI / 2 + i * Math.PI / 5;
+    pts.push((cx + r * Math.cos(angle)).toFixed(1) + "," + (cy + r * Math.sin(angle)).toFixed(1));
+  }
+  const sw = selected ? 2.5 : 1;
+  const sc = selected ? "#1b1f24" : "#ffffff";
+  return `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" style="overflow:visible;">` +
+    `<polygon points="${pts.join(" ")}" fill="${color}" fill-opacity="0.85" stroke="${sc}" stroke-width="${sw}"/></svg>`;
+}
 
 // ---------- geometry helpers (schematic, spherical-earth approximation) ----------
 function destPoint(lat, lon, bearingDeg, distKm) {
@@ -276,8 +339,6 @@ function modelYear(m) {
 
 function filteredModels() {
   const q = document.getElementById("searchBox").value.trim().toLowerCase();
-  const magMin = parseFloat(document.getElementById("magMin").value);
-  const magMax = parseFloat(document.getElementById("magMax").value);
   const styles = checkedValues("style");
   const dtypes = checkedValues("dtype");
 
@@ -286,19 +347,52 @@ function filteredModels() {
       const hay = (m.event.name + " " + m.reference.authors.join(" ")).toLowerCase();
       if (!hay.includes(q)) return false;
     }
-    if (!isNaN(magMin) && m.event.magnitude < magMin) return false;
-    if (!isNaN(magMax) && m.event.magnitude > magMax) return false;
+    if (magMinVal != null && m.event.magnitude < magMinVal) return false;
+    if (magMaxVal != null && m.event.magnitude > magMaxVal) return false;
     if (styles.length && !styles.includes(m.event.faulting_style)) return false;
     if (dtypes.length) {
       const mt = (m.inversion && m.inversion.data_types) || [];
       if (!mt.some(t => dtypes.includes(t))) return false;
     }
-    if (timeCutoffYear != null) {
-      const y = modelYear(m);
-      if (y != null && y > timeCutoffYear) return false;
+    const y = modelYear(m);
+    if (y != null) {
+      if (yearMinVal != null && y < yearMinVal) return false;
+      if (yearMaxVal != null && y > yearMaxVal) return false;
     }
     return true;
   });
+}
+
+// ---------- generic dual-handle range slider (two overlaid <input type=range>) ----------
+function setupDualSlider(minId, maxId, fillId, minLabelId, maxLabelId, dataMin, dataMax, step, formatFn, onChange) {
+  const minEl = document.getElementById(minId);
+  const maxEl = document.getElementById(maxId);
+  const fillEl = document.getElementById(fillId);
+  const minLabelEl = document.getElementById(minLabelId);
+  const maxLabelEl = document.getElementById(maxLabelId);
+
+  [minEl, maxEl].forEach(el => { el.min = dataMin; el.max = dataMax; el.step = step; });
+  minEl.value = dataMin;
+  maxEl.value = dataMax;
+
+  function update() {
+    let minV = parseFloat(minEl.value);
+    let maxV = parseFloat(maxEl.value);
+    if (minV > maxV) { minV = maxV; minEl.value = minV; }
+    minEl.max = maxV;
+    maxEl.min = minV;
+    const range = (dataMax - dataMin) || 1;
+    const minPct = ((minV - dataMin) / range) * 100;
+    const maxPct = ((maxV - dataMin) / range) * 100;
+    fillEl.style.left = minPct + "%";
+    fillEl.style.width = Math.max(maxPct - minPct, 0) + "%";
+    minLabelEl.textContent = formatFn(minV);
+    maxLabelEl.textContent = formatFn(maxV);
+    onChange(minV, maxV);
+  }
+  minEl.addEventListener("input", update);
+  maxEl.addEventListener("input", update);
+  update();
 }
 
 // ---------- map + basemaps ----------
@@ -314,7 +408,7 @@ const baseSatellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/s
 const baseTerrain = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
   attribution: "Map data: &copy; OpenStreetMap contributors, SRTM &middot; Map style: &copy; OpenTopoMap (CC-BY-SA)", maxZoom: 17
 });
-baseStreets.addTo(map);
+baseSatellite.addTo(map); // satellite is the default basemap
 
 const HOME_VIEW = { center: [38.5, 23.5], zoom: 6 };
 
@@ -411,9 +505,9 @@ const LegendControl = L.Control.extend({
         <div class="lg-row"><span class="lg-dot" style="background:${c}"></span>${k}</div>
       `).join("")}
       <hr/>
-      <div class="lg-title">Magnitude (marker size)</div>
-      <div class="lg-line"><svg width="14" height="14"><circle cx="7" cy="7" r="3" fill="#888"/></svg> M5</div>
-      <div class="lg-line"><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="#888"/></svg> M7</div>
+      <div class="lg-title">Magnitude (marker size &prop; M)</div>
+      <div class="lg-line"><svg width="16" height="16"><circle cx="8" cy="8" r="6.4" fill="#888"/></svg> M4</div>
+      <div class="lg-line">${starIconHtml("#888", 18, false)}<span style="margin-left:2px;">M &ge; ${STAR_MAG_THRESHOLD} (star)</span></div>
       <hr/>
       <div class="lg-title">Live layer</div>
       <div class="lg-row"><span class="lg-dot" style="background:#e67e22"></span>Recent seismicity (USGS, 90d, M2.5+)</div>
@@ -424,26 +518,6 @@ const LegendControl = L.Control.extend({
 map.addControl(new LegendControl());
 
 L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
-
-// ---------- time control ----------
-const TimeControl = L.Control.extend({
-  options: { position: "topright" },
-  onAdd: function () {
-    const div = L.DomUtil.create("div", "gb-control", "");
-    div.id = "timeControl";
-    L.DomEvent.disableClickPropagation(div);
-    const years = MODELS.map(modelYear).filter(y => y != null);
-    const minY = years.length ? Math.min(...years) : 2000;
-    const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
-    timeCutoffYear = maxY;
-    div.innerHTML = `
-      <div class="tc-label"><span>Models through year</span><span id="tcYearLabel">${maxY}</span></div>
-      <input type="range" id="tcSlider" min="${minY}" max="${maxY}" value="${maxY}" step="1" />
-    `;
-    return div;
-  }
-});
-map.addControl(new TimeControl());
 
 // ---------- render ----------
 function render() {
@@ -471,12 +545,28 @@ function render() {
   eventLayer = L.layerGroup();
   list.forEach(m => {
     const [lat, lon] = repPoint(m);
-    const marker = L.circleMarker([lat, lon], {
-      radius: 4 + (m.event.magnitude - 4) * 2.4,
-      color: STYLE_COLORS[m.event.faulting_style] || STYLE_COLORS.unknown,
-      weight: m.model_id === selectedId ? 3 : 1.5,
-      fillOpacity: 0.55
-    });
+    const color = STYLE_COLORS[m.event.faulting_style] || FALLBACK_COLOR;
+    const isSelected = m.model_id === selectedId;
+    const r = markerRadius(m.event.magnitude);
+    let marker;
+    if (m.event.magnitude >= STAR_MAG_THRESHOLD) {
+      const d = Math.max(r * 2, 14);
+      marker = L.marker([lat, lon], {
+        icon: L.divIcon({
+          html: starIconHtml(color, d, isSelected),
+          className: "",
+          iconSize: [d, d],
+          iconAnchor: [d / 2, d / 2]
+        })
+      });
+    } else {
+      marker = L.circleMarker([lat, lon], {
+        radius: r,
+        color: color,
+        weight: isSelected ? 3 : 1.5,
+        fillOpacity: 0.55
+      });
+    }
     marker.bindTooltip(`${m.event.name} — M${m.event.magnitude.toFixed(1)} (${m.reference.year})`);
     marker.on("click", () => selectModel(m.model_id));
     marker.addTo(eventLayer);
@@ -507,7 +597,7 @@ function selectModel(id) {
     <div class="authors">${(ref.authors || []).join(", ")} (${ref.year || "?"})</div>
     <table>
       <tr><td class="k">Magnitude</td><td>${m.event.magnitude} ${m.event.magnitude_type}</td></tr>
-      <tr><td class="k">Faulting style</td><td><span class="style-dot" style="background:${STYLE_COLORS[m.event.faulting_style]}"></span>${m.event.faulting_style}</td></tr>
+      <tr><td class="k">Faulting style</td><td><span class="style-dot" style="background:${STYLE_COLORS[m.event.faulting_style] || FALLBACK_COLOR}"></span>${m.event.faulting_style}</td></tr>
       <tr><td class="k">Tectonic setting</td><td>${m.event.tectonic_setting || "—"}</td></tr>
       <tr><td class="k">Hypocenter</td><td>${m.event.hypocenter.latitude.toFixed(3)}, ${m.event.hypocenter.longitude.toFixed(3)}, ${m.event.hypocenter.depth_km} km</td></tr>
       <tr><td class="k">Data types</td><td>${(inv.data_types || []).join(", ") || "—"}</td></tr>
@@ -635,22 +725,30 @@ async function loadSeismicity() {
 // ---------- init ----------
 buildFilterCheckboxes("styleFilter", allValues("event", "faulting_style"), "style");
 buildFilterCheckboxes("dataFilter", allValues("inversion", "data_types"), "dtype");
-["searchBox", "magMin", "magMax"].forEach(id => document.getElementById(id).addEventListener("input", render));
+document.getElementById("searchBox").addEventListener("input", render);
 
 seismicityLayer.addTo(map);
 loadSeismicity();
 
 L.control.layers(
-  { "Streets": baseStreets, "Satellite (Esri)": baseSatellite, "Terrain": baseTerrain },
+  { "Satellite (Esri)": baseSatellite, "Streets": baseStreets, "Terrain": baseTerrain },
   { "Recent seismicity (USGS, live)": seismicityLayer },
   { position: "topright", collapsed: false }
 ).addTo(map);
 
-document.getElementById("tcSlider").addEventListener("input", (e) => {
-  timeCutoffYear = parseInt(e.target.value, 10);
-  document.getElementById("tcYearLabel").textContent = timeCutoffYear;
-  render();
-});
+const dataMags = MODELS.map(m => m.event.magnitude);
+const magFloor = Math.floor(Math.min(...dataMags) * 10) / 10;
+const magCeil = Math.ceil(Math.max(...dataMags) * 10) / 10;
+setupDualSlider("magMinSlider", "magMaxSlider", "magFill", "magMinLabel", "magMaxLabel",
+  magFloor, magCeil, 0.1, v => v.toFixed(1),
+  (lo, hi) => { magMinVal = lo; magMaxVal = hi; render(); });
+
+const dataYears = MODELS.map(modelYear).filter(y => y != null);
+const yearFloor = dataYears.length ? Math.min(...dataYears) : 1990;
+const yearCeil = dataYears.length ? Math.max(...dataYears) : new Date().getFullYear();
+setupDualSlider("yearMinSlider", "yearMaxSlider", "yearFill", "yearMinLabel", "yearMaxLabel",
+  yearFloor, yearCeil, 1, v => Math.round(v),
+  (lo, hi) => { yearMinVal = lo; yearMaxVal = hi; render(); });
 
 render();
 document.getElementById("footerNote").innerHTML =
