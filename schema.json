@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greece-slip-db.org/schemas/slip-model.schema.json",
+  "title": "Finite-Fault Slip Model (Greece Slip Model Database)",
+  "description": "Schema for a single published finite-fault slip model of an earthquake in Greece. One file = one model (a given earthquake may have several models, from different authors/methods, each as its own record). Field set follows the parameterization described in Bonatis & Vavlas (this review) and is aligned with the SRCMOD .fsp convention (Mai & Thingbaijam, 2014) for interoperability.",
+  "type": "object",
+  "required": ["schema_version", "model_id", "event", "reference", "fault_segments"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Unique ID, convention: <event_id>_<first_author>_<year>, e.g. arkalochori2021_bonatis_2024",
+      "pattern": "^[a-z0-9]+_[a-z]+_[0-9]{4}$"
+    },
+
+    "event": {
+      "type": "object",
+      "description": "Properties of the earthquake itself (shared across all models of the same event).",
+      "required": ["event_id", "name", "origin_time", "magnitude", "magnitude_type", "hypocenter", "faulting_style"],
+      "properties": {
+        "event_id": { "type": "string", "description": "Stable identifier shared by all models of this earthquake, e.g. arkalochori2021" },
+        "name": { "type": "string", "description": "Common name, e.g. 'Arkalochori (Crete) 2021'" },
+        "origin_time": { "type": "string", "format": "date-time" },
+        "magnitude": { "type": "number" },
+        "magnitude_type": { "type": "string", "enum": ["Mw", "Ms", "ML", "Mb"] },
+        "hypocenter": {
+          "type": "object",
+          "required": ["latitude", "longitude", "depth_km"],
+          "properties": {
+            "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+            "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+            "depth_km": { "type": "number", "minimum": 0 }
+          }
+        },
+        "faulting_style": {
+          "type": "string",
+          "enum": ["normal", "reverse", "strike-slip", "oblique-normal", "oblique-reverse", "unknown"]
+        },
+        "tectonic_setting": {
+          "type": "string",
+          "description": "e.g. 'Hellenic Subduction Zone', 'Aegean back-arc extension', 'Kephalonia Transform Fault Zone'"
+        },
+        "region": { "type": "string", "description": "e.g. 'Crete', 'Samos', 'Ionian Islands'" }
+      }
+    },
+
+    "reference": {
+      "type": "object",
+      "description": "Bibliographic source of this specific model.",
+      "required": ["authors", "year"],
+      "properties": {
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "year": { "type": "integer" },
+        "title": { "type": "string" },
+        "journal": { "type": "string" },
+        "doi": { "type": "string" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+
+    "inversion": {
+      "type": "object",
+      "description": "How the model was derived (paper section 2.1).",
+      "properties": {
+        "data_types": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["teleseismic", "strong_motion", "GNSS", "InSAR", "GPS_static", "field_mapping", "other"] }
+        },
+        "method": { "type": "string", "description": "e.g. 'linear least squares with Laplacian smoothing', 'Bayesian', 'simulated annealing'" },
+        "green_function_model": { "type": "string", "description": "e.g. 'Okada uniform elastic half-space', 'layered 1D velocity model'" },
+        "slip_type": { "type": "string", "enum": ["uniform", "variable"] },
+        "smoothing_constraint": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "fault_segments": {
+      "type": "array",
+      "minItems": 1,
+      "description": "One or more planar fault segments making up the source geometry.",
+      "items": {
+        "type": "object",
+        "required": ["segment_id", "strike_deg", "dip_deg", "length_km", "width_km", "top_depth_km", "reference_point"],
+        "properties": {
+          "segment_id": { "type": "string" },
+          "strike_deg": { "type": "number", "minimum": 0, "maximum": 360 },
+          "dip_deg": { "type": "number", "minimum": 0, "maximum": 90 },
+          "average_rake_deg": { "type": "number", "minimum": -180, "maximum": 180 },
+          "length_km": { "type": "number", "minimum": 0 },
+          "width_km": { "type": "number", "minimum": 0 },
+          "top_depth_km": { "type": "number", "minimum": 0 },
+          "reference_point": {
+            "type": "object",
+            "description": "Geographic anchor of the segment (e.g. top-center of the fault plane).",
+            "required": ["latitude", "longitude"],
+            "properties": {
+              "latitude": { "type": "number" },
+              "longitude": { "type": "number" }
+            }
+          },
+          "patch_grid": {
+            "type": "object",
+            "description": "Discretization of the segment into along-strike x down-dip subfault patches (omit for uniform-slip models).",
+            "properties": {
+              "n_along_strike": { "type": "integer", "minimum": 1 },
+              "n_down_dip": { "type": "integer", "minimum": 1 },
+              "patch_length_km": { "type": "number" },
+              "patch_width_km": { "type": "number" }
+            }
+          },
+          "patches": {
+            "type": "array",
+            "description": "Per-patch slip values. Omit or leave empty for uniform-slip models; use average_rake_deg + summary_metrics.max_slip_m instead.",
+            "items": {
+              "type": "object",
+              "required": ["along_strike_km", "down_dip_km", "latitude", "longitude", "depth_km", "slip_m", "rake_deg"],
+              "properties": {
+                "along_strike_km": { "type": "number", "description": "Position of patch center along strike, from segment start" },
+                "down_dip_km": { "type": "number", "description": "Position of patch center down-dip, from the top edge" },
+                "latitude": { "type": "number" },
+                "longitude": { "type": "number" },
+                "depth_km": { "type": "number", "minimum": 0 },
+                "slip_m": { "type": "number", "minimum": 0 },
+                "rake_deg": { "type": "number", "minimum": -180, "maximum": 180 },
+                "rise_time_s": { "type": ["number", "null"] },
+                "rupture_time_s": { "type": ["number", "null"], "description": "Time of rupture onset at this patch, for kinematic (time-dependent) models" }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "summary_metrics": {
+      "type": "object",
+      "description": "Derived scalar values for cross-event comparison and scaling analyses (paper section 3.4).",
+      "properties": {
+        "max_slip_m": { "type": "number", "minimum": 0 },
+        "mean_slip_m": { "type": "number", "minimum": 0 },
+        "rupture_area_km2": { "type": "number", "minimum": 0 },
+        "seismic_moment_Nm": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+
+    "model_variant": {
+      "type": "object",
+      "description": "Optional flag for non-standard model types discussed in the paper.",
+      "properties": {
+        "phase": { "type": "string", "enum": ["coseismic", "postseismic"], "default": "coseismic" }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "description": "FAIR / archival metadata (paper section 5.1).",
+      "properties": {
+        "compiled_by": { "type": "string" },
+        "date_added": { "type": "string", "format": "date" },
+        "license": { "type": "string", "default": "CC-BY-4.0" },
+        "source_file_url": { "type": "string", "format": "uri", "description": "Link to original author-supplied supplementary data, if available" }
+      }
+    }
+  }
+}

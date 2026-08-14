@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Greece Finite-Fault Slip Model Geobrowser</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+  :root {
+    --ink: #1b1f24;
+    --muted: #5b6572;
+    --line: #dde1e6;
+    --bg: #f7f8fa;
+    --panel: #ffffff;
+    --accent: #8a1f1f;
+    --accent-light: #b8433a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); }
+
+  header {
+    padding: 14px 20px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  header h1 { font-size: 18px; margin: 0; font-weight: 650; }
+  header .sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  header .stats { font-size: 12.5px; color: var(--muted); text-align: right; }
+  header .stats b { color: var(--ink); }
+
+  #layout {
+    display: grid;
+    grid-template-columns: 320px 1fr 340px;
+    height: calc(100% - 62px);
+  }
+  @media (max-width: 980px) {
+    #layout { grid-template-columns: 1fr; height: auto; }
+    #map { height: 480px; }
+  }
+
+  #sidebar {
+    border-right: 1px solid var(--line);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #filters { padding: 12px; border-bottom: 1px solid var(--line); overflow-y: auto; max-height: 46vh; }
+  #filters input[type="text"], #filters input[type="number"] {
+    width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; margin-bottom: 8px;
+  }
+  #filters .row { display: flex; gap: 6px; }
+  #filters .row input { width: 50%; }
+  #filters fieldset { border: none; padding: 0; margin: 0 0 8px 0; }
+  #filters legend { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 0; margin-bottom: 4px; }
+  #filters label { font-size: 12.5px; display: inline-flex; align-items: center; gap: 4px; margin-right: 10px; margin-bottom: 4px; }
+
+  #modelList { flex: 1; overflow-y: auto; }
+  .model-row { padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .model-row:hover { background: #f2f3f5; }
+  .model-row.selected { background: #fbeceb; border-left: 3px solid var(--accent); }
+  .model-row .name { font-size: 13.5px; font-weight: 600; }
+  .model-row .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .badge { display: inline-block; font-size: 10.5px; padding: 1px 6px; border-radius: 10px; background: #eef0f2; color: var(--muted); margin-right: 4px; }
+
+  #map { height: 100%; }
+
+  /* --- custom Leaflet-style controls (match native leaflet-bar look) --- */
+  .gb-control {
+    background: var(--panel);
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    font-size: 12px;
+  }
+  .gb-btn {
+    display: block; width: 30px; height: 30px; line-height: 30px; text-align: center;
+    cursor: pointer; background: var(--panel); border: none; border-bottom: 1px solid var(--line);
+    font-size: 15px; color: var(--ink);
+  }
+  .gb-btn:last-child { border-bottom: none; }
+  .gb-btn:hover { background: #f2f3f5; }
+  .gb-btn.active { background: var(--accent); color: #fff; }
+
+  #legendControl { padding: 8px 10px; min-width: 168px; }
+  #legendControl .lg-title { font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 5px; }
+  #legendControl .lg-row { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+  #legendControl .lg-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  #legendControl .lg-line { display: flex; align-items: center; gap: 4px; margin: 4px 0; }
+  #legendControl hr { border: none; border-top: 1px solid var(--line); margin: 6px 0; }
+
+  #timeControl { padding: 8px 10px; width: 230px; }
+  #timeControl .tc-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display:flex; justify-content: space-between; }
+  #timeControl input[type="range"] { width: 100%; }
+
+  #measureLabel {
+    position: absolute; background: rgba(27,31,36,.85); color: #fff; font-size: 11.5px;
+    padding: 2px 6px; border-radius: 4px; pointer-events: none; transform: translate(-50%, -130%);
+  }
+
+  #detail { border-left: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 16px; }
+  #detail h2 { font-size: 15.5px; margin: 0 0 2px 0; }
+  #detail .authors { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
+  #detail table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 14px; }
+  #detail table td { padding: 3px 0; vertical-align: top; }
+  #detail table td.k { color: var(--muted); width: 42%; }
+  #detail .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px 0; }
+  #detail .btn {
+    display: inline-block; font-size: 12.5px; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line);
+    background: #fff; cursor: pointer; text-decoration: none; color: var(--ink); margin-right: 6px; margin-bottom: 6px;
+  }
+  #detail .btn:hover { background: #f2f3f5; }
+  #detail .empty { color: var(--muted); font-size: 13px; padding-top: 40px; text-align: center; }
+  #patchCanvasWrap { text-align: center; }
+  #legendRow { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); margin-top: 6px; justify-content: center; }
+  .schematic-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+  .style-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+
+  footer { padding: 6px 20px; font-size: 11px; color: var(--muted); background: var(--panel); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Greece Finite-Fault Slip Model Geobrowser</h1>
+    <div class="sub">A FAIR-aligned, community-compiled repository of published coseismic &amp; postseismic slip models &middot; companion to Vavlas &amp; Bonatis, <em>Unveiling the Unseen</em></div>
+  </div>
+  <div class="stats" id="statsBox"></div>
+</header>
+
+<div id="layout">
+  <div id="sidebar">
+    <div id="filters">
+      <input type="text" id="searchBox" placeholder="Search event name or author..." />
+      <div class="row">
+        <input type="number" id="magMin" placeholder="Mag min" step="0.1" />
+        <input type="number" id="magMax" placeholder="Mag max" step="0.1" />
+      </div>
+      <fieldset id="styleFilter">
+        <legend>Faulting style</legend>
+      </fieldset>
+      <fieldset id="dataFilter">
+        <legend>Data type</legend>
+      </fieldset>
+    </div>
+    <div id="modelList"></div>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="detail">
+    <div class="empty" id="detailEmpty">Select a model from the list or map to see details.</div>
+    <div id="detailContent" style="display:none;"></div>
+  </div>
+</div>
+
+<footer id="footerNote"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const MODELS = __MODELS_JSON__;
+const BUILT_AT = "__BUILT_AT__";
+const MODEL_COUNT = __MODEL_COUNT__;
+
+const STYLE_COLORS = {
+  "normal": "#2c6fbb",
+  "reverse": "#b8433a",
+  "strike-slip": "#3a9d5d",
+  "oblique-normal": "#9b59b6",
+  "oblique-reverse": "#d68910",
+  "unknown": "#7f8c8d"
+};
+
+let selectedId = null;
+let eventLayer = null;
+let faultLayer = null;
+let seismicityLayer = L.layerGroup();
+let timeCutoffYear = null; // set after init once min/max years are known
+
+// ---------- geometry helpers (schematic, spherical-earth approximation) ----------
+function destPoint(lat, lon, bearingDeg, distKm) {
+  const R = 6371;
+  const brng = bearingDeg * Math.PI / 180;
+  const lat1 = lat * Math.PI / 180;
+  const lon1 = lon * Math.PI / 180;
+  const dR = distKm / R;
+  const lat2 = Math.asin(Math.sin(lat1) * Math.cos(dR) + Math.cos(lat1) * Math.sin(dR) * Math.cos(brng));
+  const lon2 = lon1 + Math.atan2(
+    Math.sin(brng) * Math.sin(dR) * Math.cos(lat1),
+    Math.cos(dR) - Math.sin(lat1) * Math.sin(lat2)
+  );
+  return [lat2 * 180 / Math.PI, lon2 * 180 / Math.PI];
+}
+
+function haversineKm(a, b) {
+  const R = 6371;
+  const dLat = (b[0] - a[0]) * Math.PI / 180;
+  const dLon = (b[1] - a[1]) * Math.PI / 180;
+  const lat1 = a[0] * Math.PI / 180;
+  const lat2 = b[0] * Math.PI / 180;
+  const h = Math.sin(dLat/2)**2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function segmentSurfacePolygon(seg) {
+  const { strike_deg, dip_deg, length_km, width_km, reference_point } = seg;
+  const halfLen = length_km / 2;
+  const topLeft = destPoint(reference_point.latitude, reference_point.longitude, (strike_deg + 180) % 360, halfLen);
+  const topRight = destPoint(reference_point.latitude, reference_point.longitude, strike_deg, halfLen);
+  const downDipAz = (strike_deg + 90) % 360;
+  const downDipOffset = width_km * Math.cos(dip_deg * Math.PI / 180);
+  const botLeft = destPoint(topLeft[0], topLeft[1], downDipAz, downDipOffset);
+  const botRight = destPoint(topRight[0], topRight[1], downDipAz, downDipOffset);
+  return [topLeft, topRight, botRight, botLeft];
+}
+
+function repPoint(model) {
+  const seg = model.fault_segments && model.fault_segments[0];
+  if (seg && seg.reference_point) return [seg.reference_point.latitude, seg.reference_point.longitude];
+  return [model.event.hypocenter.latitude, model.event.hypocenter.longitude];
+}
+
+// ---------- slip color scale ----------
+function slipColor(v, vmax) {
+  const stops = [[255,245,204],[253,174,97],[178,24,43],[103,0,13]];
+  const t = vmax > 0 ? Math.min(Math.max(v / vmax, 0), 1) : 0;
+  const seg = t * (stops.length - 1);
+  const i = Math.min(Math.floor(seg), stops.length - 2);
+  const f = seg - i;
+  const c = stops[i].map((s, idx) => Math.round(s + f * (stops[i+1][idx] - s)));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+// ---------- data helpers ----------
+function allValues(key1, key2) {
+  const set = new Set();
+  MODELS.forEach(m => {
+    let v = key2 ? m[key1] && m[key1][key2] : m[key1];
+    if (Array.isArray(v)) v.forEach(x => set.add(x));
+    else if (v) set.add(v);
+  });
+  return [...set].sort();
+}
+
+function buildFilterCheckboxes(containerId, values, name) {
+  const el = document.getElementById(containerId);
+  values.forEach(v => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.value = v;
+    cb.checked = true;
+    cb.dataset.filterGroup = name;
+    cb.addEventListener("change", render);
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(v));
+    el.appendChild(label);
+  });
+}
+
+function checkedValues(name) {
+  return [...document.querySelectorAll(`input[data-filter-group="${name}"]:checked`)].map(el => el.value);
+}
+
+function modelYear(m) {
+  if (m.reference && m.reference.year) return m.reference.year;
+  if (m.event && m.event.origin_time) return parseInt(m.event.origin_time.slice(0, 4), 10);
+  return null;
+}
+
+function filteredModels() {
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const magMin = parseFloat(document.getElementById("magMin").value);
+  const magMax = parseFloat(document.getElementById("magMax").value);
+  const styles = checkedValues("style");
+  const dtypes = checkedValues("dtype");
+
+  return MODELS.filter(m => {
+    if (q) {
+      const hay = (m.event.name + " " + m.reference.authors.join(" ")).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    if (!isNaN(magMin) && m.event.magnitude < magMin) return false;
+    if (!isNaN(magMax) && m.event.magnitude > magMax) return false;
+    if (styles.length && !styles.includes(m.event.faulting_style)) return false;
+    if (dtypes.length) {
+      const mt = (m.inversion && m.inversion.data_types) || [];
+      if (!mt.some(t => dtypes.includes(t))) return false;
+    }
+    if (timeCutoffYear != null) {
+      const y = modelYear(m);
+      if (y != null && y > timeCutoffYear) return false;
+    }
+    return true;
+  });
+}
+
+// ---------- map + basemaps ----------
+const map = L.map("map", { scrollWheelZoom: true, zoomControl: false }).setView([38.5, 23.5], 6);
+L.control.zoom({ position: "topleft" }).addTo(map);
+
+const baseStreets = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "&copy; OpenStreetMap contributors", maxZoom: 19
+});
+const baseSatellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+  attribution: "Tiles &copy; Esri &mdash; Esri, Maxar, Earthstar Geographics", maxZoom: 19
+});
+const baseTerrain = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+  attribution: "Map data: &copy; OpenStreetMap contributors, SRTM &middot; Map style: &copy; OpenTopoMap (CC-BY-SA)", maxZoom: 17
+});
+baseStreets.addTo(map);
+
+const HOME_VIEW = { center: [38.5, 23.5], zoom: 6 };
+
+// ---------- home / reset control ----------
+const HomeControl = L.Control.extend({
+  options: { position: "topleft" },
+  onAdd: function () {
+    const div = L.DomUtil.create("div", "gb-control leaflet-bar");
+    const btn = L.DomUtil.create("button", "gb-btn", div);
+    btn.title = "Reset to Greece extent";
+    btn.innerHTML = "&#8962;";
+    L.DomEvent.on(btn, "click", (e) => {
+      L.DomEvent.stop(e);
+      map.setView(HOME_VIEW.center, HOME_VIEW.zoom);
+    });
+    return div;
+  }
+});
+map.addControl(new HomeControl());
+
+// ---------- measure-distance control ----------
+let measuring = false;
+let measurePts = [];
+let measureLine = null;
+let measureMarkers = [];
+let measureLabelEl = null;
+
+const MeasureControl = L.Control.extend({
+  options: { position: "topleft" },
+  onAdd: function () {
+    const div = L.DomUtil.create("div", "gb-control leaflet-bar");
+    const btn = L.DomUtil.create("button", "gb-btn", div);
+    btn.id = "measureBtn";
+    btn.title = "Measure distance (click two points)";
+    btn.innerHTML = "&#128207;";
+    L.DomEvent.on(btn, "click", (e) => {
+      L.DomEvent.stop(e);
+      toggleMeasure();
+    });
+    return div;
+  }
+});
+map.addControl(new MeasureControl());
+
+function toggleMeasure() {
+  measuring = !measuring;
+  document.getElementById("measureBtn").classList.toggle("active", measuring);
+  clearMeasure();
+  map.getContainer().style.cursor = measuring ? "crosshair" : "";
+}
+
+function clearMeasure() {
+  measurePts = [];
+  if (measureLine) { map.removeLayer(measureLine); measureLine = null; }
+  measureMarkers.forEach(mk => map.removeLayer(mk));
+  measureMarkers = [];
+  if (measureLabelEl) { measureLabelEl.remove(); measureLabelEl = null; }
+}
+
+map.on("click", (e) => {
+  if (!measuring) return;
+  measurePts.push([e.latlng.lat, e.latlng.lng]);
+  const mk = L.circleMarker(e.latlng, { radius: 4, color: "#1b1f24", fillOpacity: 1 }).addTo(map);
+  measureMarkers.push(mk);
+  if (measurePts.length === 2) {
+    measureLine = L.polyline(measurePts, { color: "#1b1f24", weight: 2, dashArray: "4,4" }).addTo(map);
+    const dist = haversineKm(measurePts[0], measurePts[1]);
+    const mid = map.latLngToContainerPoint([
+      (measurePts[0][0] + measurePts[1][0]) / 2,
+      (measurePts[0][1] + measurePts[1][1]) / 2
+    ]);
+    measureLabelEl = document.createElement("div");
+    measureLabelEl.id = "measureLabel";
+    measureLabelEl.textContent = dist.toFixed(1) + " km";
+    measureLabelEl.style.left = mid.x + "px";
+    measureLabelEl.style.top = mid.y + "px";
+    map.getContainer().appendChild(measureLabelEl);
+    measuring = false;
+    document.getElementById("measureBtn").classList.remove("active");
+    map.getContainer().style.cursor = "";
+  }
+});
+
+// ---------- legend control ----------
+const LegendControl = L.Control.extend({
+  options: { position: "bottomleft" },
+  onAdd: function () {
+    const div = L.DomUtil.create("div", "gb-control", "");
+    div.id = "legendControl";
+    L.DomEvent.disableClickPropagation(div);
+    div.innerHTML = `
+      <div class="lg-title">Faulting style</div>
+      ${Object.entries(STYLE_COLORS).map(([k, c]) => `
+        <div class="lg-row"><span class="lg-dot" style="background:${c}"></span>${k}</div>
+      `).join("")}
+      <hr/>
+      <div class="lg-title">Magnitude (marker size)</div>
+      <div class="lg-line"><svg width="14" height="14"><circle cx="7" cy="7" r="3" fill="#888"/></svg> M5</div>
+      <div class="lg-line"><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="#888"/></svg> M7</div>
+      <hr/>
+      <div class="lg-title">Live layer</div>
+      <div class="lg-row"><span class="lg-dot" style="background:#e67e22"></span>Recent seismicity (USGS, 90d, M2.5+)</div>
+    `;
+    return div;
+  }
+});
+map.addControl(new LegendControl());
+
+L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
+
+// ---------- time control ----------
+const TimeControl = L.Control.extend({
+  options: { position: "topright" },
+  onAdd: function () {
+    const div = L.DomUtil.create("div", "gb-control", "");
+    div.id = "timeControl";
+    L.DomEvent.disableClickPropagation(div);
+    const years = MODELS.map(modelYear).filter(y => y != null);
+    const minY = years.length ? Math.min(...years) : 2000;
+    const maxY = years.length ? Math.max(...years) : new Date().getFullYear();
+    timeCutoffYear = maxY;
+    div.innerHTML = `
+      <div class="tc-label"><span>Models through year</span><span id="tcYearLabel">${maxY}</span></div>
+      <input type="range" id="tcSlider" min="${minY}" max="${maxY}" value="${maxY}" step="1" />
+    `;
+    return div;
+  }
+});
+map.addControl(new TimeControl());
+
+// ---------- render ----------
+function render() {
+  const list = filteredModels();
+
+  const listEl = document.getElementById("modelList");
+  listEl.innerHTML = "";
+  list.forEach(m => {
+    const row = document.createElement("div");
+    row.className = "model-row" + (m.model_id === selectedId ? " selected" : "");
+    row.innerHTML = `
+      <div class="name">${m.event.name}</div>
+      <div class="meta">
+        <span class="badge">M${m.event.magnitude.toFixed(1)}</span>
+        <span class="badge">${m.event.faulting_style}</span>
+        <span class="badge">${m.reference.year}</span>
+      </div>
+      <div class="meta">${m.reference.authors[0]}${m.reference.authors.length > 1 ? " et al." : ""}</div>
+    `;
+    row.addEventListener("click", () => selectModel(m.model_id));
+    listEl.appendChild(row);
+  });
+
+  if (eventLayer) map.removeLayer(eventLayer);
+  eventLayer = L.layerGroup();
+  list.forEach(m => {
+    const [lat, lon] = repPoint(m);
+    const marker = L.circleMarker([lat, lon], {
+      radius: 4 + (m.event.magnitude - 4) * 2.4,
+      color: STYLE_COLORS[m.event.faulting_style] || STYLE_COLORS.unknown,
+      weight: m.model_id === selectedId ? 3 : 1.5,
+      fillOpacity: 0.55
+    });
+    marker.bindTooltip(`${m.event.name} — M${m.event.magnitude.toFixed(1)} (${m.reference.year})`);
+    marker.on("click", () => selectModel(m.model_id));
+    marker.addTo(eventLayer);
+  });
+  eventLayer.addTo(map);
+
+  document.getElementById("statsBox").innerHTML =
+    `<b>${list.length}</b> of ${MODELS.length} models shown &middot; ` +
+    `<b>${new Set(MODELS.map(m => m.event.event_id)).size}</b> distinct events`;
+}
+
+function selectModel(id) {
+  selectedId = id;
+  const m = MODELS.find(x => x.model_id === id);
+  render();
+  if (!m) return;
+
+  document.getElementById("detailEmpty").style.display = "none";
+  const content = document.getElementById("detailContent");
+  content.style.display = "block";
+
+  const inv = m.inversion || {};
+  const sm = m.summary_metrics || {};
+  const ref = m.reference || {};
+
+  content.innerHTML = `
+    <h2>${m.event.name}</h2>
+    <div class="authors">${(ref.authors || []).join(", ")} (${ref.year || "?"})</div>
+    <table>
+      <tr><td class="k">Magnitude</td><td>${m.event.magnitude} ${m.event.magnitude_type}</td></tr>
+      <tr><td class="k">Faulting style</td><td><span class="style-dot" style="background:${STYLE_COLORS[m.event.faulting_style]}"></span>${m.event.faulting_style}</td></tr>
+      <tr><td class="k">Tectonic setting</td><td>${m.event.tectonic_setting || "—"}</td></tr>
+      <tr><td class="k">Hypocenter</td><td>${m.event.hypocenter.latitude.toFixed(3)}, ${m.event.hypocenter.longitude.toFixed(3)}, ${m.event.hypocenter.depth_km} km</td></tr>
+      <tr><td class="k">Data types</td><td>${(inv.data_types || []).join(", ") || "—"}</td></tr>
+      <tr><td class="k">Method</td><td>${inv.method || "—"}</td></tr>
+      <tr><td class="k">Slip type</td><td>${inv.slip_type || "—"}</td></tr>
+      <tr><td class="k">Max slip</td><td>${sm.max_slip_m != null ? sm.max_slip_m + " m" : "—"}</td></tr>
+      <tr><td class="k">Mean slip</td><td>${sm.mean_slip_m != null ? sm.mean_slip_m + " m" : "—"}</td></tr>
+      <tr><td class="k">Rupture area</td><td>${sm.rupture_area_km2 != null ? sm.rupture_area_km2 + " km²" : "—"}</td></tr>
+      <tr><td class="k">Phase</td><td>${(m.model_variant && m.model_variant.phase) || "coseismic"}</td></tr>
+    </table>
+
+    ${ref.doi || ref.url ? `<a class="btn" href="${ref.doi ? "https://doi.org/" + ref.doi : ref.url}" target="_blank" rel="noopener">View publication ↗</a>` : ""}
+    <a class="btn" id="downloadBtn" href="#">Download record (JSON)</a>
+
+    <div class="section-title">Slip distribution</div>
+    <div id="patchCanvasWrap"></div>
+  `;
+
+  document.getElementById("downloadBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const blob = new Blob([JSON.stringify(m, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = m.model_id + ".json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  renderPatchGrid(m);
+
+  if (faultLayer) map.removeLayer(faultLayer);
+  faultLayer = L.layerGroup();
+  (m.fault_segments || []).forEach(seg => {
+    const poly = segmentSurfacePolygon(seg);
+    L.polygon(poly, { color: STYLE_COLORS[m.event.faulting_style] || "#333", weight: 2, fillOpacity: 0.12 })
+      .addTo(faultLayer);
+  });
+  faultLayer.addTo(map);
+  const [lat, lon] = repPoint(m);
+  map.setView([lat, lon], 10);
+}
+
+function renderPatchGrid(m) {
+  const wrap = document.getElementById("patchCanvasWrap");
+  const seg = (m.fault_segments || []).find(s => s.patches && s.patches.length);
+  if (!seg) {
+    wrap.innerHTML = `<div class="schematic-note">Uniform-slip model — no patch-level data reported.</div>`;
+    return;
+  }
+  const patches = seg.patches;
+  const xs = [...new Set(patches.map(p => p.along_strike_km))].sort((a, b) => a - b);
+  const ys = [...new Set(patches.map(p => p.down_dip_km))].sort((a, b) => a - b);
+  const grid = ys.map(() => new Array(xs.length).fill(null));
+  patches.forEach(p => {
+    grid[ys.indexOf(p.down_dip_km)][xs.indexOf(p.along_strike_km)] = p;
+  });
+
+  const cell = 26;
+  const w = xs.length * cell;
+  const h = ys.length * cell;
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  canvas.style.border = "1px solid var(--line)";
+  const ctx = canvas.getContext("2d");
+  const vmax = Math.max(...patches.map(p => p.slip_m));
+
+  grid.forEach((row, yi) => {
+    row.forEach((p, xi) => {
+      ctx.fillStyle = p ? slipColor(p.slip_m, vmax) : "#eee";
+      ctx.fillRect(xi * cell, yi * cell, cell, cell);
+      ctx.strokeStyle = "#fff";
+      ctx.strokeRect(xi * cell, yi * cell, cell, cell);
+    });
+  });
+
+  wrap.innerHTML = "";
+  wrap.appendChild(canvas);
+  const legend = document.createElement("div");
+  legend.id = "legendRow";
+  legend.innerHTML = `<span>0 m</span><div style="width:80px;height:8px;background:linear-gradient(to right, rgb(255,245,204), rgb(253,174,97), rgb(178,24,43), rgb(103,0,13));"></div><span>${vmax.toFixed(2)} m</span>`;
+  wrap.appendChild(legend);
+  const note = document.createElement("div");
+  note.className = "schematic-note";
+  note.textContent = "Top row = shallowest along-dip row. Grid layout schematic, not geolocated.";
+  wrap.appendChild(note);
+}
+
+// ---------- live seismicity layer (USGS FDSN event webservice) ----------
+async function loadSeismicity() {
+  try {
+    const end = new Date();
+    const start = new Date(end.getTime() - 90 * 24 * 3600 * 1000);
+    const fmt = d => d.toISOString().slice(0, 10);
+    const url = `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson` +
+      `&starttime=${fmt(start)}&endtime=${fmt(end)}` +
+      `&minlatitude=34&maxlatitude=42&minlongitude=19&maxlongitude=30&minmagnitude=2.5`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const geo = await res.json();
+    seismicityLayer.clearLayers();
+    geo.features.forEach(f => {
+      const [lon, lat] = f.geometry.coordinates;
+      const mag = f.properties.mag;
+      const mk = L.circleMarker([lat, lon], {
+        radius: 3 + Math.max(mag, 0) * 1.6,
+        color: "#e67e22",
+        weight: 1,
+        fillOpacity: 0.5
+      });
+      const when = new Date(f.properties.time).toISOString().slice(0, 16).replace("T", " ");
+      mk.bindPopup(`<b>M${mag}</b> — ${f.properties.place}<br/>${when} UTC<br/><a href="${f.properties.url}" target="_blank" rel="noopener">USGS event page ↗</a>`);
+      mk.addTo(seismicityLayer);
+    });
+    document.getElementById("seismicityNote").textContent =
+      `Live: ${geo.features.length} event(s), last 90 days, M2.5+ (USGS), fetched ${new Date().toISOString().slice(0,16).replace("T"," ")} UTC`;
+  } catch (err) {
+    document.getElementById("seismicityNote").textContent =
+      "Live seismicity layer unavailable (network/CORS blocked in this environment). Works normally once deployed.";
+    console.warn("Seismicity fetch failed:", err);
+  }
+}
+
+// ---------- init ----------
+buildFilterCheckboxes("styleFilter", allValues("event", "faulting_style"), "style");
+buildFilterCheckboxes("dataFilter", allValues("inversion", "data_types"), "dtype");
+["searchBox", "magMin", "magMax"].forEach(id => document.getElementById(id).addEventListener("input", render));
+
+seismicityLayer.addTo(map);
+loadSeismicity();
+
+L.control.layers(
+  { "Streets": baseStreets, "Satellite (Esri)": baseSatellite, "Terrain": baseTerrain },
+  { "Recent seismicity (USGS, live)": seismicityLayer },
+  { position: "topright", collapsed: false }
+).addTo(map);
+
+document.getElementById("tcSlider").addEventListener("input", (e) => {
+  timeCutoffYear = parseInt(e.target.value, 10);
+  document.getElementById("tcYearLabel").textContent = timeCutoffYear;
+  render();
+});
+
+render();
+document.getElementById("footerNote").innerHTML =
+  `Schematic fault-surface projections (spherical-earth approximation) — for exact geometry consult the source publication. ` +
+  `Built ${BUILT_AT} · ${MODEL_COUNT} model(s) · data licensed per-record (see provenance.license). ` +
+  `<span id="seismicityNote">Loading live seismicity…</span>`;
+</script>
+</body>
+</html>

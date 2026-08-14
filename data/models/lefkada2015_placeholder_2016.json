@@ -1,0 +1,214 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "lefkada2015_placeholder_2016",
+  "event": {
+    "event_id": "lefkada2015",
+    "name": "Lefkada (Ionian Sea) 2015",
+    "origin_time": "2015-11-17T07:10:07Z",
+    "magnitude": 6.5,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 38.67,
+      "longitude": 20.6,
+      "depth_km": 11.0
+    },
+    "faulting_style": "strike-slip",
+    "tectonic_setting": "Kephalonia-Lefkada Transform Fault Zone",
+    "region": "Ionian Islands"
+  },
+  "reference": {
+    "authors": [
+      "REPLACE_WITH_AUTHORS"
+    ],
+    "year": 2016,
+    "title": "REPLACE_WITH_FULL_CITATION",
+    "journal": "REPLACE_WITH_JOURNAL",
+    "doi": "REPLACE_WITH_DOI",
+    "url": "https://example.org/replace-with-real-link"
+  },
+  "inversion": {
+    "data_types": [
+      "strong_motion",
+      "GNSS",
+      "InSAR"
+    ],
+    "method": "Bayesian",
+    "green_function_model": "layered 1D velocity model",
+    "slip_type": "variable",
+    "smoothing_constraint": true,
+    "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values are synthetic placeholders for illustrating the schema/UI. They are NOT published inversion results. Event-level facts (magnitude, origin time, hypocenter, faulting style) are from the USGS ANSS catalog (verified via the FDSN event web service). Replace geometry, slip values, and reference metadata with the real published values before treating this as a live record."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 15.0,
+      "dip_deg": 85.0,
+      "average_rake_deg": 175.0,
+      "length_km": 26.0,
+      "width_km": 13.0,
+      "top_depth_km": 1.0,
+      "reference_point": {
+        "latitude": 38.69,
+        "longitude": 20.58
+      },
+      "patch_grid": {
+        "n_along_strike": 5,
+        "n_down_dip": 3,
+        "patch_length_km": 5.2,
+        "patch_width_km": 4.33
+      },
+      "patches": [
+        {
+          "along_strike_km": 2.6,
+          "down_dip_km": 2.17,
+          "latitude": 38.5992,
+          "longitude": 20.5511,
+          "depth_km": 3.16,
+          "slip_m": 0.15,
+          "rake_deg": 172.5
+        },
+        {
+          "along_strike_km": 7.8,
+          "down_dip_km": 2.17,
+          "latitude": 38.6444,
+          "longitude": 20.5666,
+          "depth_km": 3.16,
+          "slip_m": 0.41,
+          "rake_deg": 173.5
+        },
+        {
+          "along_strike_km": 13.0,
+          "down_dip_km": 2.17,
+          "latitude": 38.6896,
+          "longitude": 20.5821,
+          "depth_km": 3.16,
+          "slip_m": 0.57,
+          "rake_deg": 174.5
+        },
+        {
+          "along_strike_km": 18.2,
+          "down_dip_km": 2.17,
+          "latitude": 38.7347,
+          "longitude": 20.5976,
+          "depth_km": 3.16,
+          "slip_m": 0.41,
+          "rake_deg": 175.5
+        },
+        {
+          "along_strike_km": 23.4,
+          "down_dip_km": 2.17,
+          "latitude": 38.7799,
+          "longitude": 20.6132,
+          "depth_km": 3.16,
+          "slip_m": 0.15,
+          "rake_deg": 176.5
+        },
+        {
+          "along_strike_km": 2.6,
+          "down_dip_km": 6.5,
+          "latitude": 38.5983,
+          "longitude": 20.5553,
+          "depth_km": 7.48,
+          "slip_m": 0.29,
+          "rake_deg": 172.5
+        },
+        {
+          "along_strike_km": 7.8,
+          "down_dip_km": 6.5,
+          "latitude": 38.6435,
+          "longitude": 20.5708,
+          "depth_km": 7.48,
+          "slip_m": 0.78,
+          "rake_deg": 173.5
+        },
+        {
+          "along_strike_km": 13.0,
+          "down_dip_km": 6.5,
+          "latitude": 38.6887,
+          "longitude": 20.5863,
+          "depth_km": 7.48,
+          "slip_m": 1.08,
+          "rake_deg": 174.5
+        },
+        {
+          "along_strike_km": 18.2,
+          "down_dip_km": 6.5,
+          "latitude": 38.7339,
+          "longitude": 20.6018,
+          "depth_km": 7.48,
+          "slip_m": 0.78,
+          "rake_deg": 175.5
+        },
+        {
+          "along_strike_km": 23.4,
+          "down_dip_km": 6.5,
+          "latitude": 38.779,
+          "longitude": 20.6174,
+          "depth_km": 7.48,
+          "slip_m": 0.29,
+          "rake_deg": 176.5
+        },
+        {
+          "along_strike_km": 2.6,
+          "down_dip_km": 10.83,
+          "latitude": 38.5975,
+          "longitude": 20.5595,
+          "depth_km": 11.79,
+          "slip_m": 0.09,
+          "rake_deg": 172.5
+        },
+        {
+          "along_strike_km": 7.8,
+          "down_dip_km": 10.83,
+          "latitude": 38.6426,
+          "longitude": 20.575,
+          "depth_km": 11.79,
+          "slip_m": 0.24,
+          "rake_deg": 173.5
+        },
+        {
+          "along_strike_km": 13.0,
+          "down_dip_km": 10.83,
+          "latitude": 38.6878,
+          "longitude": 20.5905,
+          "depth_km": 11.79,
+          "slip_m": 0.33,
+          "rake_deg": 174.5
+        },
+        {
+          "along_strike_km": 18.2,
+          "down_dip_km": 10.83,
+          "latitude": 38.733,
+          "longitude": 20.606,
+          "depth_km": 11.79,
+          "slip_m": 0.24,
+          "rake_deg": 175.5
+        },
+        {
+          "along_strike_km": 23.4,
+          "down_dip_km": 10.83,
+          "latitude": 38.7781,
+          "longitude": 20.6216,
+          "depth_km": 11.79,
+          "slip_m": 0.09,
+          "rake_deg": 176.5
+        }
+      ]
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 1.08,
+    "mean_slip_m": 0.393,
+    "rupture_area_km2": 338.0,
+    "seismic_moment_Nm": null
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Bonatis, P.",
+    "date_added": "2026-08-13",
+    "license": "CC-BY-4.0",
+    "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"
+  }
+}

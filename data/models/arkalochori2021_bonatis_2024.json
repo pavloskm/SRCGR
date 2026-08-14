@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "arkalochori2021_bonatis_2024",
+
+  "event": {
+    "event_id": "arkalochori2021",
+    "name": "Arkalochori (Crete) 2021",
+    "origin_time": "2021-09-27T09:17:00Z",
+    "magnitude": 5.9,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 35.14,
+      "longitude": 25.27,
+      "depth_km": 6.0
+    },
+    "faulting_style": "normal",
+    "tectonic_setting": "Aegean back-arc extension",
+    "region": "Crete"
+  },
+
+  "reference": {
+    "authors": ["Bonatis, P.", "et al."],
+    "year": 2024,
+    "title": "REPLACE_WITH_FULL_CITATION",
+    "journal": "REPLACE_WITH_JOURNAL",
+    "doi": "REPLACE_WITH_DOI",
+    "url": "https://example.org/replace-with-real-link"
+  },
+
+  "inversion": {
+    "data_types": ["InSAR", "GNSS"],
+    "method": "linear least squares with Laplacian smoothing",
+    "green_function_model": "Okada uniform elastic half-space",
+    "slip_type": "variable",
+    "smoothing_constraint": true,
+    "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values below are synthetic placeholders for illustrating the schema structure. They are NOT the actual published Bonatis et al. (2024) inversion results. Only the event-level facts stated in the review manuscript (magnitude 5.9, 2021, Arkalochori/Crete, normal faulting, ~1.0 m max slip at shallow depth) are real; replace everything else with verified values (e.g. from the author's supplementary data and NOA/EMSC catalogs) before publishing a real record."
+  },
+
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 105.0,
+      "dip_deg": 55.0,
+      "average_rake_deg": -90.0,
+      "length_km": 8.0,
+      "width_km": 6.0,
+      "top_depth_km": 0.5,
+      "reference_point": {
+        "latitude": 35.145,
+        "longitude": 25.28
+      },
+      "patch_grid": {
+        "n_along_strike": 4,
+        "n_down_dip": 3,
+        "patch_length_km": 2.0,
+        "patch_width_km": 2.0
+      },
+      "patches": [
+        { "along_strike_km": 1.0, "down_dip_km": 1.0, "latitude": 35.150, "longitude": 25.255, "depth_km": 1.2, "slip_m": 0.30, "rake_deg": -88 },
+        { "along_strike_km": 3.0, "down_dip_km": 1.0, "latitude": 35.148, "longitude": 25.273, "depth_km": 1.2, "slip_m": 0.55, "rake_deg": -90 },
+        { "along_strike_km": 5.0, "down_dip_km": 1.0, "latitude": 35.146, "longitude": 25.291, "depth_km": 1.2, "slip_m": 0.40, "rake_deg": -91 },
+        { "along_strike_km": 7.0, "down_dip_km": 1.0, "latitude": 35.144, "longitude": 25.309, "depth_km": 1.2, "slip_m": 0.20, "rake_deg": -89 },
+        { "along_strike_km": 1.0, "down_dip_km": 3.0, "latitude": 35.142, "longitude": 25.257, "depth_km": 2.9, "slip_m": 0.60, "rake_deg": -92 },
+        { "along_strike_km": 3.0, "down_dip_km": 3.0, "latitude": 35.140, "longitude": 25.275, "depth_km": 2.9, "slip_m": 1.00, "rake_deg": -90 },
+        { "along_strike_km": 5.0, "down_dip_km": 3.0, "latitude": 35.138, "longitude": 25.293, "depth_km": 2.9, "slip_m": 0.75, "rake_deg": -90 },
+        { "along_strike_km": 7.0, "down_dip_km": 3.0, "latitude": 35.136, "longitude": 25.311, "depth_km": 2.9, "slip_m": 0.35, "rake_deg": -88 },
+        { "along_strike_km": 1.0, "down_dip_km": 5.0, "latitude": 35.134, "longitude": 25.259, "depth_km": 4.5, "slip_m": 0.25, "rake_deg": -87 },
+        { "along_strike_km": 3.0, "down_dip_km": 5.0, "latitude": 35.132, "longitude": 25.277, "depth_km": 4.5, "slip_m": 0.45, "rake_deg": -90 },
+        { "along_strike_km": 5.0, "down_dip_km": 5.0, "latitude": 35.130, "longitude": 25.295, "depth_km": 4.5, "slip_m": 0.30, "rake_deg": -91 },
+        { "along_strike_km": 7.0, "down_dip_km": 5.0, "latitude": 35.128, "longitude": 25.313, "depth_km": 4.5, "slip_m": 0.15, "rake_deg": -89 }
+      ]
+    }
+  ],
+
+  "summary_metrics": {
+    "max_slip_m": 1.0,
+    "mean_slip_m": 0.44,
+    "rupture_area_km2": 48.0,
+    "seismic_moment_Nm": null
+  },
+
+  "model_variant": {
+    "phase": "coseismic"
+  },
+
+  "provenance": {
+    "compiled_by": "Bonatis, P.",
+    "date_added": "2026-08-09",
+    "license": "CC-BY-4.0",
+    "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"
+  }
+}

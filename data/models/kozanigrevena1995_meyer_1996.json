@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "kozanigrevena1995_meyer_1996",
+  "event": {
+    "event_id": "kozanigrevena1995",
+    "name": "Kozani-Grevena 1995",
+    "origin_time": "1995-05-13T08:47:12Z",
+    "magnitude": 6.5,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 40.149,
+      "longitude": 21.695,
+      "depth_km": 14.0
+    },
+    "faulting_style": "normal",
+    "tectonic_setting": "Aegean back-arc extension",
+    "region": "Kozani-Grevena, NW Greece"
+  },
+  "reference": {
+    "authors": [
+      "Meyer, B.",
+      "et al."
+    ],
+    "year": 1996,
+    "title": "REPLACE_WITH_FULL_CITATION_FROM_YOUR_REFERENCE_LIST",
+    "journal": "REPLACE_WITH_JOURNAL",
+    "doi": "REPLACE_WITH_DOI",
+    "url": "https://example.org/replace-with-real-link"
+  },
+  "inversion": {
+    "data_types": [
+      "InSAR",
+      "field_mapping"
+    ],
+    "method": "trial-and-error forward modeling",
+    "green_function_model": "Okada uniform elastic half-space",
+    "slip_type": "uniform",
+    "smoothing_constraint": false,
+    "notes": "SCHEMA DEMO ONLY: fault geometry, patch grid and all slip/rake values are synthetic placeholders for illustrating the schema/UI. They are NOT published inversion results. Event-level facts (magnitude, origin time, hypocenter, faulting style) are from the USGS ANSS catalog (verified via the FDSN event web service). Replace geometry, slip values, and reference metadata with the real published values before treating this as a live record. Reference is real (cited in your manuscript for this event); bibliographic fields (title/journal/DOI) still need to be filled in from your reference list. USGS ANSS lists Mw6.6 for this event vs. Mw6.5 in your manuscript text — normal cross-catalog variation, worth confirming which you want as canonical."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 125.0,
+      "dip_deg": 40.0,
+      "average_rake_deg": -90.0,
+      "length_km": 20.0,
+      "width_km": 12.0,
+      "top_depth_km": 0.0,
+      "reference_point": {
+        "latitude": 40.16,
+        "longitude": 21.72
+      }
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 0.9,
+    "mean_slip_m": 0.9,
+    "rupture_area_km2": 240.0,
+    "seismic_moment_Nm": null
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Bonatis, P.",
+    "date_added": "2026-08-13",
+    "license": "CC-BY-4.0",
+    "source_file_url": "https://example.org/replace-with-real-supplementary-data-link"
+  }
+}
