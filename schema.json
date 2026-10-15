@@ -160,7 +160,7 @@
           "enum": ["uniform", "variable"]
         },
         "smoothing_constraint": {
-          "type": "boolean"
+          "type": "boolean","null"
         },
         "notes": {
           "type": "string"
