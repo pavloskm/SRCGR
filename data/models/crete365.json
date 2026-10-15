@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "model_id": "crete365_papadimitriou_karakostas_2008",
+  "model_id": "crete365_papadimitriou&karakostas_2008",
   "event": {
     "event_id": "crete365",
     "name": "AD 365 Crete earthquake",
