@@ -12,7 +12,7 @@
       "longitude": 25.41,
       "depth_km": 11.7
     },
-    "faulting_style": "reverse (thrust)",
+    "faulting_style": "reverse",
     "tectonic_setting": "Hellenic subduction zone, possible upper-plate splay fault",
     "region": "South of Crete, Hellenic Arc, Greece"
   },
@@ -34,11 +34,11 @@
   },
   "inversion": {
     "data_types": [
-      "teleseismic P-wave displacement waveforms (30 stations)"
+      "teleseismic"
     ],
     "method": "Kinematic non-negative least-squares waveform inversion (Hartzell and Heaton, 1983); 2-D smoothing with cone-shaped filter",
     "green_function_model": "Generalized ray theory for teleseismic synthetic seismograms; Okada (1985) for tsunami surface deformation",
-    "slip_type": "heterogeneous",
+    "slip_type": "variable",
     "smoothing_constraint": true,
     "notes": "Figure 5 total-slip panel digitized by color at inferred centers of 18 x 6 patches; values approximated to 0.01 m, not original inversion output. Patch rake values use 108° from Table 2; paper reports rake allowed to vary 70°–130° but does not supply per-patch rake. Hypocenter based on preferred 2-D relocated solution (Table 1), depth 11.7 km, whereas inversion model starts rupture at ~9 km. Origin time published to minute precision. Patch latitude/longitude unavailable. Coordinate axes: along strike increases east to west in Figure 5; down-dip coordinate is on right axis. The paper lists fault width 22 km, and discretization gives 21.6 km."
   },
