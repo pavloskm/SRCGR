@@ -12,7 +12,7 @@
       "longitude": 24.35,
       "depth_km": 12.6
     },
-    "faulting_style": "left-lateral strike-slip",
+    "faulting_style": "strike-slip",
     "tectonic_setting": "Northern Aegean Sea, western termination of North Anatolian Fault system",
     "region": "Skyros Island, North Aegean Sea, Greece"
   },
@@ -30,11 +30,11 @@
   },
   "inversion": {
     "data_types": [
-      "Regional broadband displacement seismograms; empirical Green’s function source-time functions from 12 stations"
+      "strong_motion"
     ],
     "method": "Empirical Green’s functions and inversion of source time functions; positivity and first-spatial-derivative smoothing constraints",
     "green_function_model": "Empirical Green’s functions from July 26 2001 M4.9 aftershock; half-space ray approximation",
-    "slip_type": "heterogeneous",
+    "slip_type": "variable",
     "smoothing_constraint": true,
     "notes": "Slip values approximate, digitized from grayscale Figure 6, with dark aftershock cubes and contour labels superimposed. A 50 x 30 km, 1 x 1 km subfault grid is described on page 546. Greyscale is matched to the 0–200 cm bar. The figure shows a smoothed plot; reconstructed 1500 values are not original inversion results. Geographic reference point and individual patch coordinates are not established, so geographic coordinates null. Depth_km calculated from down-dip location and nominal dip of 80 deg assuming upper edge at depth 0, not source-provided individual patch depths. Rake 8 deg is nominal fault-plane mechanism, not inverted per-patch rake. Fault strike-direction plot is N-NW to S-SE, matching strike 145° in opposite direction. Aftershock squares and grayscale overlap produce uncertainty. Paper reports ~1.8 m peak and ~0.23 m average slip over ruptured region; digitized estimates may differ."
   },
