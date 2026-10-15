@@ -29,12 +29,12 @@
   },
   "inversion": {
     "data_types": [
-      "field_mapping",
+      "field_mapping"
     ],
     "method": "Iterative forward modeling: adjust subfault slip to match observed surface uplift, including dip sensitivity tests; not a modern geodetic least-squares inversion",
     "green_function_model": "Elastic dislocation model (Steketee 1958; Okada 1992)",
     "slip_type": "variable",
-    "smoothing_constraint": "null",
+    "smoothing_constraint": null,
     "notes": "Fault plane divided into 128 patches; 80 contribute nonzero slip. The paper does not specify GNSS/InSAR/teleseismic inversions or a formal smoothing penalty. Digitized slip classes are approximate."
   },
   "fault_segments": [
