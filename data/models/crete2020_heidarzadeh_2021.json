@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "crete2020_heidarzadeh_2021",
+  "event": {
+    "event_id": "crete2020_05_02",
+    "name": "2 May 2020 offshore Crete earthquake and tsunami",
+    "origin_time": "2020-05-02T12:51:06Z",
+    "magnitude": 6.67,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 34.205,
+      "longitude": 25.712,
+      "depth_km": 11.5
+    },
+    "faulting_style": "oblique-reverse",
+    "tectonic_setting": "Hellenic subduction zone, African plate subduction beneath the Aegean overriding plate",
+    "region": "Offshore southern Crete, eastern Hellenic Arc, Greece"
+  },
+  "reference": {
+    "authors": [
+      "Mohammad Heidarzadeh",
+      "Aditya Riadi Gusman"
+    ],
+    "year": 2021,
+    "title": "Source modeling and spectral analysis of the Crete tsunami of 2nd May 2020 along the Hellenic Subduction Zone, offshore Greece",
+    "journal": "Earth, Planets and Space",
+    "doi": "10.1186/s40623-021-01394-4",
+    "url": "https://doi.org/10.1186/s40623-021-01394-4"
+  },
+  "inversion": {
+    "data_types": [
+      "other"
+    ],
+    "method": "Tsunami waveform inversion of tide-gauge sea-level observations using non-negative least squares (MATLAB lsqnonneg), after Satake (1987, 2014); numerical linear shallow-water tsunami Green functions.",
+    "green_function_model": "Okada (1985) elastic seafloor displacement per unit slip, propagated using linear shallow-water numerical tsunami simulations and nested bathymetry grids.",
+    "slip_type": "variable",
+    "smoothing_constraint": null,
+    "notes": "Original numerical slip values are transcribed directly from published Table 2, not estimated from the colors in Fig. 9a. The source is a 4 x 3 grid of 10 x 10 km subfaults, with 40 km along strike and 30 km down dip. Table 2 lists each subfault upper-left corner (not center) and corresponding upper-left depths of 8.0, 12.1 and 16.1 km. Here patch coordinates are CALCULATED centers from the published corners by moving 5 km at azimuth 257 degrees and 5 cos(24 degrees) km at azimuth 347 degrees using WGS84 geodesics; patch center depth is estimated by adding 5 sin(24 degrees) km to the listed depth. These derived coordinates/depths are not separately published center locations. Coordinates are approximate. Reference point is the midpoint of first and last upper-left corners in the shallow row, used only for map schematic. Mw 6.67 and seismic moment are the authors' model-derived estimates; USGS lists Mw 6.6. Data type is other because the inversion used tsunami tide-gauge waveforms, not a named category in SRCGR. No smoothing constraint is explicitly established by the paper, so smoothing_constraint is null. Rupture area of 1000 km2 counts the ten nonzero-slip subfaults; the total modeled fault plane is 1200 km2."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 257.0,
+      "dip_deg": 24.0,
+      "average_rake_deg": 71.0,
+      "length_km": 40.0,
+      "width_km": 30.0,
+      "top_depth_km": 8.0,
+      "reference_point": {
+        "latitude": 33.94945,
+        "longitude": 25.7984
+      },
+      "patch_grid": {
+        "n_along_strike": 4,
+        "n_down_dip": 3,
+        "patch_length_km": 10.0,
+        "patch_width_km": 10.0
+      },
+      "patches": [
+        {
+          "along_strike_km": 5,
+          "down_dip_km": 5,
+          "latitude": 34.010072,
+          "longitude": 25.893061,
+          "depth_km": 10.034,
+          "slip_m": 0.24,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 15,
+          "down_dip_km": 5,
+          "latitude": 33.989672,
+          "longitude": 25.787476,
+          "depth_km": 10.034,
+          "slip_m": 0.23,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 25,
+          "down_dip_km": 5,
+          "latitude": 33.969272,
+          "longitude": 25.681791,
+          "depth_km": 10.034,
+          "slip_m": 0.02,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 35,
+          "down_dip_km": 5,
+          "latitude": 33.948773,
+          "longitude": 25.576107,
+          "depth_km": 10.034,
+          "slip_m": 0,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 5,
+          "down_dip_km": 15,
+          "latitude": 34.090172,
+          "longitude": 25.870601,
+          "depth_km": 14.134,
+          "slip_m": 0.53,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 15,
+          "down_dip_km": 15,
+          "latitude": 34.069772,
+          "longitude": 25.765016,
+          "depth_km": 14.134,
+          "slip_m": 0.64,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 25,
+          "down_dip_km": 15,
+          "latitude": 34.049372,
+          "longitude": 25.659431,
+          "depth_km": 14.134,
+          "slip_m": 0.39,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 35,
+          "down_dip_km": 15,
+          "latitude": 34.028872,
+          "longitude": 25.553747,
+          "depth_km": 14.134,
+          "slip_m": 0.06,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 5,
+          "down_dip_km": 25,
+          "latitude": 34.170271,
+          "longitude": 25.848241,
+          "depth_km": 18.134,
+          "slip_m": 0.27,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 15,
+          "down_dip_km": 25,
+          "latitude": 34.149872,
+          "longitude": 25.742556,
+          "depth_km": 18.134,
+          "slip_m": 0.29,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 25,
+          "down_dip_km": 25,
+          "latitude": 34.129472,
+          "longitude": 25.636971,
+          "depth_km": 18.134,
+          "slip_m": 0.15,
+          "rake_deg": 71.0
+        },
+        {
+          "along_strike_km": 35,
+          "down_dip_km": 25,
+          "latitude": 34.108972,
+          "longitude": 25.531387,
+          "depth_km": 18.134,
+          "slip_m": 0,
+          "rake_deg": 71.0
+        }
+      ]
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 0.64,
+    "mean_slip_m": 0.28,
+    "rupture_area_km2": 1000.0,
+    "seismic_moment_Nm": 1.13e+19
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Digitized for SRCGR from Heidarzadeh and Gusman (2021), Table 2",
+    "date_added": "2026-10-17",
+    "license": "CC-BY-4.0",
+    "source_file_url": "https://doi.org/10.1186/s40623-021-01394-4"
+  }
+}

@@ -1,0 +1,1157 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "cretanbasin2012_kiratzi_2013",
+  "event": {
+    "event_id": "cretanbasin2012_01_27",
+    "name": "27 January 2012 Cretan Basin earthquake",
+    "origin_time": "2012-01-27T01:33:24Z",
+    "magnitude": 5.3,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 36.044,
+      "longitude": 25.064,
+      "depth_km": 14.0
+    },
+    "faulting_style": "strike-slip",
+    "tectonic_setting": "Trench-parallel extension in the overriding Aegean plate, southern Aegean Sea",
+    "region": "Cretan Basin, south of the Hellenic Volcanic Arc, Greece"
+  },
+  "reference": {
+    "authors": [
+      "Anastasia Kiratzi"
+    ],
+    "year": 2013,
+    "title": "The January 2012 earthquake sequence in the Cretan Basin, south of the Hellenic Volcanic Arc: Focal mechanisms, rupture directivity and slip models",
+    "journal": "Tectonophysics",
+    "doi": "10.1016/j.tecto.2012.11.019",
+    "url": "https://doi.org/10.1016/j.tecto.2012.11.019"
+  },
+  "inversion": {
+    "data_types": [
+      "other"
+    ],
+    "method": "Nonnegative least-squares finite-fault inversion of regional broadband waveforms (13 stations), with Laplacian smoothing, damping and moment minimization; rupture velocity 2.5 km/s and rise time 0.2 s. Digitized from the published Fig. 9 slip color map.",
+    "green_function_model": "Regional broadband synthetic Green's functions; time-domain moment-tensor calculations use frequency-wavenumber integration with the Novotny et al. (2001) velocity model.",
+    "slip_type": "variable",
+    "smoothing_constraint": true,
+    "notes": "FIGURE-DIGITIZED, NOT ORIGINAL INVERSION PATCH VALUES. Figure 9 (Jan 27 Mw5.3) shows color scale 0-40 cm and axes -6 to +6 km along strike (North to South) and -5 to +5 km along dip. This file samples approximate color at centers of a 12 x 10 grid (1 x 1 km); it does not claim this was the inversion mesh. Along-strike distance is measured from the figure's northern edge; down-dip grid index is assigned from the top of the printed figure, but the geographic dip direction is not resolved. Depths are inferred from a planar dip of 84 degrees and 14-km hypocenter at the plotted origin and are not independently published patch depths. Patch geocoordinates are unavailable. Patch rake is held at the preferred nodal-plane value -154 degrees from Table 1; patch-specific rake is not reported. The reported ~5 x 4 km concentrated slip region, 40-cm peak, 13-cm mean and 20-km2 rupture area are paper estimates, not grid-wide statistical summaries. The zero-valued figure background is retained in the sampled mesh. The segment reference_point is set approximately at the earthquake epicenter for geobrowser display, not a surveyed upper-edge endpoint."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 177.0,
+      "dip_deg": 84.0,
+      "average_rake_deg": -154.0,
+      "length_km": 12.0,
+      "width_km": 10.0,
+      "top_depth_km": 9.027,
+      "reference_point": {
+        "latitude": 36.044,
+        "longitude": 25.064
+      },
+      "patch_grid": {
+        "n_along_strike": 12,
+        "n_down_dip": 10,
+        "patch_length_km": 1.0,
+        "patch_width_km": 1.0
+      },
+      "patches": [
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 9.525,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.519,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.046,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.064,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.084,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.074,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.074,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.015,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 11.514,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.026,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.072,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.201,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.237,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.256,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.2,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.1,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.014,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.508,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.052,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.125,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.246,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.348,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.374,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.316,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.199,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.074,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 13.503,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.052,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.11,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.202,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.295,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.334,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.271,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.188,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.073,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 14.497,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.021,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.104,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.145,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.179,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.159,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.115,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.034,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 6.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.492,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.012,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.041,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.052,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.034,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.032,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 7.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 16.486,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 8.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 17.481,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 9.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 10.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        },
+        {
+          "along_strike_km": 11.5,
+          "down_dip_km": 9.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 18.475,
+          "slip_m": 0.0,
+          "rake_deg": -154.0
+        }
+      ]
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 0.4,
+    "mean_slip_m": 0.13,
+    "rupture_area_km2": 20.0,
+    "seismic_moment_Nm": 1.33e+17
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Figure 9 digitization from user-provided Kiratzi (2013) paper and image",
+    "date_added": "2026-10-17",
+    "license": null,
+    "source_file_url": "https://doi.org/10.1016/j.tecto.2012.11.019"
+  }
+}
