@@ -35,7 +35,7 @@
 
   #layout {
     display: grid;
-    grid-template-columns: 320px 1fr 340px;
+    grid-template-columns: 320px minmax(0, 1fr) 340px;
     height: calc(100% - 62px);
   }
   @media (max-width: 980px) {
@@ -85,8 +85,9 @@
   .model-row:hover { background: #f2f3f5; }
   .model-row.selected { background: #fbeceb; border-left: 3px solid var(--accent); }
   .model-row .name { font-size: 13.5px; font-weight: 600; }
-  .model-row .meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .badge { display: inline-block; font-size: 10.5px; padding: 1px 6px; border-radius: 10px; background: #eef0f2; color: var(--muted); margin-right: 4px; }
+  .model-row .citation { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .lg-stars { display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; padding: 2px 0; }
+  .lg-star { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; font-size: 10px; color: var(--muted); min-width: 31px; }
 
   #map { height: 100%; }
 
@@ -118,7 +119,7 @@
     padding: 2px 6px; border-radius: 4px; pointer-events: none; transform: translate(-50%, -130%);
   }
 
-  #detail { border-left: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 16px; }
+  #detail { border-left: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 16px; min-width: 0; }
   #detail h2 { font-size: 15.5px; margin: 0 0 2px 0; }
   #detail .authors { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; }
   #detail table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 14px; }
@@ -131,9 +132,35 @@
   }
   #detail .btn:hover { background: #f2f3f5; }
   #detail .empty { color: var(--muted); font-size: 13px; padding-top: 40px; text-align: center; }
-  #patchCanvasWrap { text-align: center; }
-  #legendRow { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); margin-top: 6px; justify-content: center; }
-  .schematic-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; }
+  #patchCanvasWrap { width: 100%; min-width: 0; }
+  .slip-segment { min-width: 0; margin: 10px 0 16px; }
+  .slip-segment-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 12px; font-weight: 600; }
+  .slip-expand, .slip-tool { font: inherit; border: 1px solid var(--line); border-radius: 5px; background: #fff; color: var(--ink); padding: 5px 8px; cursor: pointer; }
+  .slip-expand:hover, .slip-tool:hover { background: #f2f3f5; }
+  .slip-overview-wrap { display: flex; justify-content: center; align-items: center; width: 100%; min-width: 0; }
+  .slip-overview { display: block; width: auto; height: auto; max-width: 100%; max-height: min(45vh, 440px); border: 1px solid var(--line); image-rendering: pixelated; }
+  .slip-key { display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); margin-top: 8px; }
+  .slip-key-gradient { width: min(170px, 56%); height: 9px; background: linear-gradient(to right, rgb(255,245,204), rgb(253,174,97), rgb(178,24,43), rgb(103,0,13)); }
+  .schematic-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 6px; text-align: center; }
+
+  /* Fullscreen viewer: raster cells are never interpolated or smoothed. */
+  #slipModal[hidden] { display: none; }
+  #slipModal { position: fixed; inset: 0; z-index: 2500; background: rgba(15,19,25,.75); padding: clamp(8px, 2.5vw, 28px); display: flex; align-items: center; justify-content: center; }
+  .slip-dialog { width: 100%; max-width: 1450px; height: min(94vh, 1020px); background: var(--panel); border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 18px 60px rgba(0,0,0,.35); }
+  .slip-dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  #slipModalTitle { font-size: 15px; font-weight: 650; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .slip-modal-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; padding: 9px 14px; border-bottom: 1px solid var(--line); }
+  .slip-modal-controls select { max-width: 185px; padding: 5px; border: 1px solid var(--line); border-radius: 5px; }
+  .slip-modal-controls .spacer { flex: 1; }
+  .slip-viewport { flex: 1; min-height: 100px; position: relative; background: #f4f5f7; cursor: grab; touch-action: none; overflow: hidden; }
+  .slip-viewport.dragging { cursor: grabbing; }
+  #slipViewerCanvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+  #slipCellInfo { position: absolute; pointer-events: none; z-index: 2; background: rgba(27,31,36,.92); color: white; font-size: 12px; padding: 6px 8px; border-radius: 5px; max-width: 260px; display: none; white-space: pre-line; }
+  .slip-dialog-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 14px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+  .slip-dialog-foot #slipViewerLegend { min-width: 245px; white-space: nowrap; flex-shrink: 0; }
+  .slip-dialog-foot #slipViewerLegend .slip-key-gradient { width: 175px; }
+  .slip-dialog-foot > div:last-child { flex: 1 1 260px; text-align: right; }
+  @media (max-width: 550px) { .slip-dialog-head { padding: 9px; } .slip-modal-controls { padding: 8px; } #slipModalTitle { font-size: 12px; } }
 
   .style-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
 
@@ -195,6 +222,32 @@
   </div>
 </div>
 
+<!-- Fullscreen slip viewer; one shared viewer for all models and fault segments. -->
+<div id="slipModal" hidden role="dialog" aria-modal="true" aria-labelledby="slipModalTitle">
+  <div class="slip-dialog">
+    <div class="slip-dialog-head">
+      <div id="slipModalTitle">Slip distribution</div>
+      <button type="button" class="slip-tool" id="slipClose" aria-label="Close slip viewer">✕ Close</button>
+    </div>
+    <div class="slip-modal-controls">
+      <label for="slipSegmentSelect">Segment</label>
+      <select id="slipSegmentSelect"></select>
+      <span class="spacer"></span>
+      <button type="button" class="slip-tool" id="slipZoomOut" aria-label="Zoom out">−</button>
+      <button type="button" class="slip-tool" id="slipZoomIn" aria-label="Zoom in">+</button>
+      <button type="button" class="slip-tool" id="slipFit">Fit to window</button>
+    </div>
+    <div id="slipViewport" class="slip-viewport">
+      <canvas id="slipViewerCanvas" aria-label="Zoomable subfault slip distribution"></canvas>
+      <div id="slipCellInfo"></div>
+    </div>
+    <div class="slip-dialog-foot">
+      <div id="slipViewerLegend" class="slip-key"></div>
+      <div>Wheel or +/−: zoom · Drag: pan · Hover: patch values · Esc: close</div>
+    </div>
+  </div>
+</div>
+
 <footer id="footerNote"></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -207,14 +260,17 @@ const STYLE_COLORS = {
   "normal": "#2c6fbb",
   "reverse": "#b8433a",
   "strike-slip": "#3a9d5d",
-  "oblique": "#9b59b6"
+  "oblique-normal": "#9b59b6",
+  "oblique-reverse": "#ce8733",
+  "unknown": "#7f8c8d"
 };
 const FALLBACK_COLOR = "#7f8c8d";
 
-// Marker size scales continuously with magnitude (radius_px = magnitude * MAG_FACTOR) —
-// a straight multiplicative factor, not stepped/discrete buckets.
-const MAG_FACTOR = 3.2;
-const STAR_MAG_THRESHOLD = 6;
+// Every modeled earthquake is a star; star diameter varies continuously with magnitude.
+// Fixed, linear diameter scaling shared between the map and the legend.
+function starSizePx(magnitude) {
+  return Math.max(12, 6 + Number(magnitude) * 4.2);
+}
 
 let selectedId = null;
 let eventLayer = null;
@@ -223,12 +279,34 @@ let seismicityLayer = L.layerGroup();
 let magMinVal = null, magMaxVal = null;
 let yearMinVal = null, yearMaxVal = null;
 
-function markerRadius(mag) {
-  return Math.max(mag, 0) * MAG_FACTOR;
+function publicationCitation(m) {
+  const authors = (m.reference && m.reference.authors) || [];
+  const first = String(authors[0] || "Unknown author").trim();
+  // Most records use "Given Middle Surname" or "Initials Surname".
+  // Also support "Surname, Given" without modifying the underlying metadata.
+  const surname = first.includes(",") ? first.split(",")[0].trim() : first.split(/\s+/).at(-1);
+  const label = authors.length > 1 ? `${surname} et al.` : surname;
+  return `${label} (${m.reference?.year || "n.d."})`;
 }
 
-// 5-pointed star icon (used for M >= STAR_MAG_THRESHOLD events) as an inline SVG,
-// sized to match the same diameter a circle marker of that magnitude would have.
+function slipNumber(value) {
+  if (value == null || !Number.isFinite(Number(value))) return "—";
+  // At most two decimal places (round, but do not pad with unnecessary zeros).
+  return Number(Number(value).toFixed(2)) + " m";
+}
+
+function magnitudeSubscript(type) {
+  // Keep the published magnitude scale; ML must not be relabeled Mw.
+  const typeText = String(type || "Mw").replace(/\s/g, "");
+  if (/^m(w|l|s|b)$/i.test(typeText)) return `M<sub>${typeText.slice(1)}</sub>`;
+  return typeText;
+}
+
+function magnitudePlain(m) {
+  return `${m.event.magnitude_type || "M"} ${Number(m.event.magnitude).toFixed(1)}`;
+}
+
+// 5-pointed star icon used for every modeled earthquake and in the marker-size legend.
 function starIconHtml(color, sizePx, selected) {
   const s = Math.max(sizePx, 12);
   const cx = s / 2, cy = s / 2;
@@ -514,12 +592,13 @@ const LegendControl = L.Control.extend({
         <div class="lg-row"><span class="lg-dot" style="background:${c}"></span>${k}</div>
       `).join("")}
       <hr/>
-      <div class="lg-title">Magnitude (marker size &prop; M)</div>
-      <div class="lg-line"><svg width="16" height="16"><circle cx="8" cy="8" r="6.4" fill="#888"/></svg> M4</div>
-      <div class="lg-line">${starIconHtml("#888", 18, false)}<span style="margin-left:2px;">M &ge; ${STAR_MAG_THRESHOLD} (star)</span></div>
+      <div class="lg-title">Magnitude · proportional star size</div>
+      <div class="lg-stars">${[4, 5, 6, 7].map(mag => `
+        <div class="lg-star">${starIconHtml("#888", starSizePx(mag), false)}<span>M${mag}</span></div>
+      `).join("")}</div>
       <hr/>
-      <div class="lg-title">Live layer</div>
-      <div class="lg-row"><span class="lg-dot" style="background:#e67e22"></span>Recent seismicity (USGS, 90d, M2.5+)</div>
+      <div class="lg-title">Live layer (off by default)</div>
+      <div class="lg-row">${starIconHtml("#e67e22", starSizePx(3), false)}<span>Recent seismicity (USGS, 90d, M2.5+)</span></div>
     `;
     return div;
   }
@@ -539,12 +618,7 @@ function render() {
     row.className = "model-row" + (m.model_id === selectedId ? " selected" : "");
     row.innerHTML = `
       <div class="name">${m.event.name}</div>
-      <div class="meta">
-        <span class="badge">M${m.event.magnitude.toFixed(1)}</span>
-        <span class="badge">${m.event.faulting_style}</span>
-        <span class="badge">${m.reference.year}</span>
-      </div>
-      <div class="meta">${m.reference.authors[0]}${m.reference.authors.length > 1 ? " et al." : ""}</div>
+      <div class="citation">${publicationCitation(m)}</div>
     `;
     row.addEventListener("click", () => selectModel(m.model_id));
     listEl.appendChild(row);
@@ -558,27 +632,16 @@ function render() {
     const [lat, lon] = position;
     const color = STYLE_COLORS[m.event.faulting_style] || FALLBACK_COLOR;
     const isSelected = m.model_id === selectedId;
-    const r = markerRadius(m.event.magnitude);
-    let marker;
-    if (m.event.magnitude >= STAR_MAG_THRESHOLD) {
-      const d = Math.max(r * 2, 14);
-      marker = L.marker([lat, lon], {
-        icon: L.divIcon({
-          html: starIconHtml(color, d, isSelected),
-          className: "",
-          iconSize: [d, d],
-          iconAnchor: [d / 2, d / 2]
-        })
-      });
-    } else {
-      marker = L.circleMarker([lat, lon], {
-        radius: r,
-        color: color,
-        weight: isSelected ? 3 : 1.5,
-        fillOpacity: 0.55
-      });
-    }
-    marker.bindTooltip(`${m.event.name} — M${m.event.magnitude.toFixed(1)} (${m.reference.year})`);
+    const d = starSizePx(m.event.magnitude);
+    const marker = L.marker([lat, lon], {
+      icon: L.divIcon({
+        html: starIconHtml(color, d, isSelected),
+        className: "",
+        iconSize: [d, d],
+        iconAnchor: [d / 2, d / 2]
+      })
+    });
+    marker.bindTooltip(`${m.event.name} — ${magnitudePlain(m)} · ${publicationCitation(m)}`);
     marker.on("click", () => selectModel(m.model_id));
     marker.addTo(eventLayer);
   });
@@ -614,15 +677,15 @@ function selectModel(id) {
     <h2>${m.event.name}</h2>
     <div class="authors">${(ref.authors || []).join(", ")} (${ref.year || "?"})</div>
     <table>
-      <tr><td class="k">Magnitude</td><td>${m.event.magnitude} ${m.event.magnitude_type}</td></tr>
+      <tr><td class="k">Magnitude (${magnitudeSubscript(m.event.magnitude_type)})</td><td>${m.event.magnitude}</td></tr>
       <tr><td class="k">Faulting style</td><td><span class="style-dot" style="background:${STYLE_COLORS[m.event.faulting_style] || FALLBACK_COLOR}"></span>${m.event.faulting_style}</td></tr>
       <tr><td class="k">Tectonic setting</td><td>${m.event.tectonic_setting || "—"}</td></tr>
       <tr><td class="k">Hypocenter</td><td>${hypoLocation}, ${hypoDepth}</td></tr>
       <tr><td class="k">Data types</td><td>${(inv.data_types || []).join(", ") || "—"}</td></tr>
       <tr><td class="k">Method</td><td>${inv.method || "—"}</td></tr>
       <tr><td class="k">Slip type</td><td>${inv.slip_type || "—"}</td></tr>
-      <tr><td class="k">Max slip</td><td>${sm.max_slip_m != null ? sm.max_slip_m + " m" : "—"}</td></tr>
-      <tr><td class="k">Mean slip</td><td>${sm.mean_slip_m != null ? sm.mean_slip_m + " m" : "—"}</td></tr>
+      <tr><td class="k">Max slip</td><td>${slipNumber(sm.max_slip_m)}</td></tr>
+      <tr><td class="k">Mean slip</td><td>${slipNumber(sm.mean_slip_m)}</td></tr>
       <tr><td class="k">Rupture area</td><td>${sm.rupture_area_km2 != null ? sm.rupture_area_km2 + " km²" : "—"}</td></tr>
       <tr><td class="k">Phase</td><td>${(m.model_variant && m.model_variant.phase) || "coseismic"}</td></tr>
     </table>
@@ -661,51 +724,271 @@ function selectModel(id) {
   if (position) map.setView(position, 10);
 }
 
-function renderPatchGrid(m) {
-  const wrap = document.getElementById("patchCanvasWrap");
-  const seg = (m.fault_segments || []).find(s => s.patches && s.patches.length);
-  if (!seg) {
-    wrap.innerHTML = `<div class="schematic-note">Uniform-slip model — no patch-level data reported.</div>`;
-    return;
-  }
-  const patches = seg.patches;
+// ---------- slip field overview + fullscreen multi-segment viewer ----------
+let slipGridState = null;
+const slipViewer = { active: 0, zoom: 1, panX: 0, panY: 0, dragging: false, lastX: 0, lastY: 0 };
+
+function makeSlipGrid(segment, index) {
+  const patches = segment.patches || [];
   const xs = [...new Set(patches.map(p => p.along_strike_km))].sort((a, b) => a - b);
   const ys = [...new Set(patches.map(p => p.down_dip_km))].sort((a, b) => a - b);
-  const grid = ys.map(() => new Array(xs.length).fill(null));
-  patches.forEach(p => {
-    grid[ys.indexOf(p.down_dip_km)][xs.indexOf(p.along_strike_km)] = p;
+  const xIndex = new Map(xs.map((x, i) => [x, i]));
+  const yIndex = new Map(ys.map((y, i) => [y, i]));
+  const grid = ys.map(() => Array(xs.length).fill(null));
+  patches.forEach(p => { grid[yIndex.get(p.down_dip_km)][xIndex.get(p.along_strike_km)] = p; });
+  const label = segment.name || segment.label || `Segment ${index + 1}`;
+  return { segment, label, xs, ys, grid };
+}
+
+function slipLegendHtml(vmax) {
+  return `<span>0 m</span><span class="slip-key-gradient"></span><span>${vmax.toFixed(2)} m</span>`;
+}
+
+function renderPatchGrid(m) {
+  const wrap = document.getElementById("patchCanvasWrap");
+  wrap.replaceChildren();
+  const available = (m.fault_segments || []).filter(s => s.patches && s.patches.length > 0);
+  if (!available.length) {
+    wrap.innerHTML = `<div class="schematic-note">Uniform-slip model — no patch-level data reported.</div>`;
+    slipGridState = null;
+    return;
+  }
+  const grids = available.map((s, i) => makeSlipGrid(s, i));
+  const vmax = Math.max(0, ...available.flatMap(seg => seg.patches.map(p => Number(p.slip_m) || 0)));
+  slipGridState = { model: m, grids, vmax };
+
+  grids.forEach((g, index) => {
+    const section = document.createElement("section");
+    section.className = "slip-segment";
+    const heading = document.createElement("div");
+    heading.className = "slip-segment-heading";
+    const label = document.createElement("span");
+    label.textContent = grids.length > 1 ? `${g.label} · ${g.xs.length} × ${g.ys.length}` : `${g.xs.length} × ${g.ys.length} subfaults`;
+    const expand = document.createElement("button");
+    expand.type = "button";
+    expand.className = "slip-expand";
+    expand.textContent = "⤢ Expand";
+    expand.setAttribute("aria-label", `Expand slip viewer for ${g.label}`);
+    expand.addEventListener("click", () => openSlipViewer(index));
+    heading.append(label, expand);
+
+    const box = document.createElement("div");
+    box.className = "slip-overview-wrap";
+    const canvas = document.createElement("canvas");
+    canvas.className = "slip-overview";
+    canvas.width = g.xs.length * 12;
+    canvas.height = g.ys.length * 12;
+    canvas.title = "Open the fullscreen viewer to zoom, pan, and inspect individual patches";
+    const ctx = canvas.getContext("2d");
+    g.grid.forEach((row, yi) => row.forEach((p, xi) => {
+      ctx.fillStyle = p && Number.isFinite(Number(p.slip_m)) ? slipColor(Number(p.slip_m), vmax) : "#d7dce1";
+      ctx.fillRect(xi * 12, yi * 12, 12, 12);
+      ctx.strokeStyle = "rgba(255,255,255,.55)";
+      ctx.lineWidth = 0.6;
+      ctx.strokeRect(xi * 12 + 0.3, yi * 12 + 0.3, 11.4, 11.4);
+    }));
+    box.appendChild(canvas);
+    const legend = document.createElement("div");
+    legend.className = "slip-key";
+    legend.innerHTML = slipLegendHtml(vmax);
+    section.append(heading, box, legend);
+    wrap.appendChild(section);
   });
-
-  const cell = 26;
-  const w = xs.length * cell;
-  const h = ys.length * cell;
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  canvas.style.border = "1px solid var(--line)";
-  const ctx = canvas.getContext("2d");
-  const vmax = Math.max(...patches.map(p => p.slip_m));
-
-  grid.forEach((row, yi) => {
-    row.forEach((p, xi) => {
-      ctx.fillStyle = p ? slipColor(p.slip_m, vmax) : "#eee";
-      ctx.fillRect(xi * cell, yi * cell, cell, cell);
-      ctx.strokeStyle = "#fff";
-      ctx.strokeRect(xi * cell, yi * cell, cell, cell);
-    });
-  });
-
-  wrap.innerHTML = "";
-  wrap.appendChild(canvas);
-  const legend = document.createElement("div");
-  legend.id = "legendRow";
-  legend.innerHTML = `<span>0 m</span><div style="width:80px;height:8px;background:linear-gradient(to right, rgb(255,245,204), rgb(253,174,97), rgb(178,24,43), rgb(103,0,13));"></div><span>${vmax.toFixed(2)} m</span>`;
-  wrap.appendChild(legend);
   const note = document.createElement("div");
   note.className = "schematic-note";
-  note.textContent = "Top row = shallowest along-dip row. Grid layout schematic, not geolocated.";
+  note.textContent = "Full fault-plane grid shown, no horizontal scrolling. Top = shallowest down-dip row; local coordinates only.";
   wrap.appendChild(note);
+  fitSlipOverviews();
 }
+
+function fitSlipOverviews() {
+  // Maximize overview size within panel width and comfortable viewport height,
+  // retaining the subfault grid's physical cell aspect ratio.
+  document.querySelectorAll(".slip-overview").forEach(c => {
+    const available = c.parentElement.clientWidth;
+    const maxHeight = Math.max(100, Math.min(window.innerHeight * 0.45, 440));
+    if (!available || !c.width || !c.height) return;
+    const scale = Math.min(available / c.width, maxHeight / c.height);
+    c.style.width = (c.width * scale) + "px";
+    c.style.height = (c.height * scale) + "px";
+  });
+}
+
+function viewerElements() {
+  return {
+    modal: document.getElementById("slipModal"),
+    viewport: document.getElementById("slipViewport"),
+    canvas: document.getElementById("slipViewerCanvas"),
+    info: document.getElementById("slipCellInfo")
+  };
+}
+
+function openSlipViewer(index) {
+  if (!slipGridState) return;
+  const { modal } = viewerElements();
+  slipViewer.active = index;
+  document.getElementById("slipModalTitle").textContent = slipGridState.model.event.name;
+  const select = document.getElementById("slipSegmentSelect");
+  select.replaceChildren();
+  slipGridState.grids.forEach((g, i) => {
+    const o = document.createElement("option");
+    o.value = i;
+    o.textContent = g.label;
+    select.appendChild(o);
+  });
+  select.value = String(index);
+  select.parentElement.querySelector('label[for="slipSegmentSelect"]').hidden = slipGridState.grids.length === 1;
+  select.hidden = slipGridState.grids.length === 1;
+  document.getElementById("slipViewerLegend").innerHTML = slipLegendHtml(slipGridState.vmax);
+  modal.hidden = false;
+  document.body.style.overflow = "hidden";
+  resetSlipView();
+  document.getElementById("slipClose").focus();
+}
+
+function closeSlipViewer() {
+  viewerElements().modal.hidden = true;
+  viewerElements().info.style.display = "none";
+  document.body.style.overflow = "";
+  slipViewer.dragging = false;
+  viewerElements().viewport.classList.remove("dragging");
+}
+
+function resetSlipView() {
+  slipViewer.zoom = 1;
+  slipViewer.panX = 0;
+  slipViewer.panY = 0;
+  viewerElements().info.style.display = "none";
+  drawSlipViewer();
+}
+
+function slipViewerTransform(width, height, g) {
+  const inset = 20;
+  const base = Math.max(0.01, Math.min((width - inset * 2) / g.xs.length, (height - inset * 2) / g.ys.length));
+  const cell = base * slipViewer.zoom;
+  return { cell, x: (width - g.xs.length * cell) / 2 + slipViewer.panX,
+    y: (height - g.ys.length * cell) / 2 + slipViewer.panY };
+}
+
+function drawSlipViewer() {
+  if (!slipGridState || viewerElements().modal.hidden) return;
+  const { viewport, canvas } = viewerElements();
+  const g = slipGridState.grids[slipViewer.active];
+  const rect = viewport.getBoundingClientRect();
+  const w = Math.max(1, rect.width), h = Math.max(1, rect.height);
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(w * dpr);
+  canvas.height = Math.round(h * dpr);
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+  ctx.imageSmoothingEnabled = false;
+  const t = slipViewerTransform(w, h, g);
+  g.grid.forEach((row, yi) => row.forEach((p, xi) => {
+    const x = t.x + xi * t.cell, y = t.y + yi * t.cell;
+    if (x + t.cell < 0 || y + t.cell < 0 || x > w || y > h) return;
+    ctx.fillStyle = p && Number.isFinite(Number(p.slip_m)) ? slipColor(Number(p.slip_m), slipGridState.vmax) : "#d7dce1";
+    ctx.fillRect(x, y, t.cell + 0.2, t.cell + 0.2);
+    if (t.cell >= 9) {
+      ctx.strokeStyle = "rgba(255,255,255,.6)";
+      ctx.lineWidth = Math.min(1.2, t.cell * 0.05);
+      ctx.strokeRect(x, y, t.cell, t.cell);
+    }
+  }));
+}
+
+function zoomSlipView(factor, cursorX = null, cursorY = null) {
+  if (!slipGridState) return;
+  const { viewport } = viewerElements();
+  const g = slipGridState.grids[slipViewer.active];
+  const w = viewport.clientWidth, h = viewport.clientHeight;
+  if (cursorX == null) cursorX = w / 2;
+  if (cursorY == null) cursorY = h / 2;
+  const oldT = slipViewerTransform(w, h, g);
+  const localX = (cursorX - oldT.x) / oldT.cell;
+  const localY = (cursorY - oldT.y) / oldT.cell;
+  slipViewer.zoom = Math.max(1, Math.min(slipViewer.zoom * factor, 36));
+  // Recompute using the actual fitted scale; keep the chosen patch under the cursor.
+  const t = slipViewerTransform(w, h, g);
+  slipViewer.panX += cursorX - (t.x + localX * t.cell);
+  slipViewer.panY += cursorY - (t.y + localY * t.cell);
+  if (slipViewer.zoom === 1) { slipViewer.panX = 0; slipViewer.panY = 0; }
+  drawSlipViewer();
+}
+
+function slipCellAt(localX, localY) {
+  if (!slipGridState) return null;
+  const { viewport } = viewerElements();
+  const g = slipGridState.grids[slipViewer.active];
+  const t = slipViewerTransform(viewport.clientWidth, viewport.clientHeight, g);
+  const xi = Math.floor((localX - t.x) / t.cell), yi = Math.floor((localY - t.y) / t.cell);
+  if (xi < 0 || yi < 0 || xi >= g.xs.length || yi >= g.ys.length) return null;
+  return { patch: g.grid[yi][xi], col: xi, row: yi, g };
+}
+
+// Viewer button and pointer interactions are registered once, not on every model selection.
+document.getElementById("slipClose").addEventListener("click", closeSlipViewer);
+document.getElementById("slipFit").addEventListener("click", resetSlipView);
+document.getElementById("slipZoomIn").addEventListener("click", () => zoomSlipView(1.5));
+document.getElementById("slipZoomOut").addEventListener("click", () => zoomSlipView(1 / 1.5));
+document.getElementById("slipSegmentSelect").addEventListener("change", e => {
+  slipViewer.active = Number(e.target.value);
+  resetSlipView();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && !viewerElements().modal.hidden) closeSlipViewer();
+});
+document.getElementById("slipModal").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeSlipViewer();
+});
+const slipViewport = document.getElementById("slipViewport");
+slipViewport.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = slipViewport.getBoundingClientRect();
+  zoomSlipView(e.deltaY < 0 ? 1.25 : 0.8, e.clientX - r.left, e.clientY - r.top);
+}, { passive: false });
+slipViewport.addEventListener("pointerdown", e => {
+  if (e.button !== 0) return;
+  slipViewer.dragging = true;
+  slipViewer.lastX = e.clientX;
+  slipViewer.lastY = e.clientY;
+  slipViewport.classList.add("dragging");
+  slipViewport.setPointerCapture(e.pointerId);
+});
+slipViewport.addEventListener("pointerup", () => {
+  slipViewer.dragging = false;
+  slipViewport.classList.remove("dragging");
+});
+slipViewport.addEventListener("pointercancel", () => {
+  slipViewer.dragging = false;
+  slipViewport.classList.remove("dragging");
+});
+slipViewport.addEventListener("pointerleave", () => {
+  viewerElements().info.style.display = "none";
+});
+slipViewport.addEventListener("pointermove", e => {
+  const r = slipViewport.getBoundingClientRect();
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  if (slipViewer.dragging) {
+    slipViewer.panX += e.clientX - slipViewer.lastX;
+    slipViewer.panY += e.clientY - slipViewer.lastY;
+    slipViewer.lastX = e.clientX;
+    slipViewer.lastY = e.clientY;
+    viewerElements().info.style.display = "none";
+    drawSlipViewer();
+    return;
+  }
+  const hit = slipCellAt(x, y);
+  const info = viewerElements().info;
+  if (!hit) { info.style.display = "none"; return; }
+  info.textContent = hit.patch
+    ? `Slip: ${slipNumber(hit.patch.slip_m)}\nAlong strike: ${hit.patch.along_strike_km} km\nDown dip: ${hit.patch.down_dip_km} km${Number.isFinite(hit.patch.depth_km) ? `\nDepth: ${hit.patch.depth_km.toFixed(2)} km` : ""}`
+    : `No patch reported\nGrid cell ${hit.col + 1}, ${hit.row + 1}`;
+  info.style.display = "block";
+  info.style.left = Math.min(x + 14, Math.max(0, r.width - 260)) + "px";
+  info.style.top = Math.min(y + 14, Math.max(0, r.height - 110)) + "px";
+});
+window.addEventListener("resize", () => { fitSlipOverviews(); drawSlipViewer(); });
 
 // ---------- live seismicity layer (USGS FDSN event webservice) ----------
 async function loadSeismicity() {
@@ -723,11 +1006,13 @@ async function loadSeismicity() {
     geo.features.forEach(f => {
       const [lon, lat] = f.geometry.coordinates;
       const mag = f.properties.mag;
-      const mk = L.circleMarker([lat, lon], {
-        radius: 3 + Math.max(mag, 0) * 1.6,
-        color: "#e67e22",
-        weight: 1,
-        fillOpacity: 0.5
+      const d = starSizePx(mag);
+      const mk = L.marker([lat, lon], {
+        icon: L.divIcon({
+          html: starIconHtml("#e67e22", d, false),
+          className: "",
+          iconSize: [d, d], iconAnchor: [d / 2, d / 2]
+        })
       });
       const when = new Date(f.properties.time).toISOString().slice(0, 16).replace("T", " ");
       mk.bindPopup(`<b>M${mag}</b> — ${f.properties.place}<br/>${when} UTC<br/><a href="${f.properties.url}" target="_blank" rel="noopener">USGS event page ↗</a>`);
@@ -747,8 +1032,11 @@ buildFilterCheckboxes("styleFilter", allValues("event", "faulting_style"), "styl
 buildFilterCheckboxes("dataFilter", allValues("inversion", "data_types"), "dtype");
 document.getElementById("searchBox").addEventListener("input", render);
 
-seismicityLayer.addTo(map);
-loadSeismicity();
+// Layer remains available in Leaflet's layer control, but starts disabled.
+// Fetch recent USGS data only when the user activates that overlay.
+map.on("overlayadd", e => {
+  if (e.layer === seismicityLayer) loadSeismicity();
+});
 
 L.control.layers(
   { "Satellite (Esri)": baseSatellite, "Streets": baseStreets, "Terrain": baseTerrain },
@@ -774,7 +1062,7 @@ render();
 document.getElementById("footerNote").innerHTML =
   `Schematic fault-surface projections (spherical-earth approximation) — for exact geometry consult the source publication. ` +
   `Built ${BUILT_AT} · ${MODEL_COUNT} model(s) · data licensed per-record (see provenance.license). ` +
-  `<span id="seismicityNote">Loading live seismicity…</span>`;
+  `<span id="seismicityNote">Recent USGS seismicity is off (enable it in map layers).</span>`;
 </script>
 </body>
 </html>
