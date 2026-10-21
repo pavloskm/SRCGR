@@ -1,323 +1,96 @@
-
 #!/usr/bin/env python3
+"""Validate independent contributor models, group earthquakes, build dist/index.html.
+
+Usage: python build.py
+Contributors need only place model JSON files into data/models/. They do not
+need to coordinate event_id or model_id with other contributors. Source files
+are NEVER rewritten. event_registry.json is generated and should be committed.
 """
-Build dist/index.html.
-
-Validate every data/models/*.json record against schema.json,
-then inline the complete dataset into template.html to produce
-a single self-contained, shareable HTML file.
-
-No server, backend, or CORS issues when opened directly from disk.
-
-Run this script whenever you add or edit a model file.
-
-The script reports all JSON syntax and schema validation errors
-instead of stopping at the first invalid file.
-"""
-
 import datetime
+import hashlib
 import json
+import math
+import os
+import re
 import sys
+import unicodedata
 from collections import Counter
+from datetime import datetime as _EventDateTime, timezone
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
 HERE = Path(__file__).resolve().parent
+MODELS_DIR = HERE / 'data' / 'models'
+SCHEMA_PATH = HERE / 'schema.json'
+TEMPLATE_PATH = HERE / 'template.html'
+DIST_PATH = HERE / 'dist' / 'index.html'
+REGISTRY_PATH = HERE / 'event_registry.json'
+OVERRIDES_PATH = HERE / 'event_overrides.json'
+REVIEW_PATH = HERE / 'event_review.json'
 
-MODELS_DIR = HERE / "data" / "models"
-SCHEMA_PATH = HERE / "schema.json"
-TEMPLATE_PATH = HERE / "template.html"
-DIST_PATH = HERE / "dist" / "index.html"
+
+# ====== Automatic earthquake matching ======
 
 
-def load_json(path):
-    """
-    Read and parse a JSON file.
+class MatchError(ValueError):
+    def __init__(self, message, review=None):
+        super().__init__(message)
+        self.review = review or []
 
-    Return the parsed object if successful.
-    Return None if the file cannot be parsed.
-    """
 
+def _parse_time(value, source):
+    if not isinstance(value, str) or not value.strip():
+        raise MatchError(f"{source}: event.origin_time (UTC) is required for automatic matching.")
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-
-    except json.JSONDecodeError as error:
-        print(f"\nINVALID JSON: {path.name}")
-        print(f"  Line: {error.lineno}")
-        print(f"  Column: {error.colno}")
-        print(f"  Error: {error.msg}")
-
-        # Display the problematic line and its surroundings.
-        lines = path.read_text(encoding="utf-8").splitlines()
-
-        start = max(0, error.lineno - 3)
-        end = min(len(lines), error.lineno + 2)
-
-        print("\n  Context:")
-
-        for index in range(start, end):
-            marker = ">>" if index + 1 == error.lineno else "  "
-            print(f"  {marker} {index + 1}: {lines[index]}")
-
-        print()
-        return None
-
-    except (OSError, UnicodeError) as error:
-        print(f"\nERROR READING: {path.name}")
-        print(f"  {error}")
-        return None
+        timestamp = _EventDateTime.fromisoformat(value.strip().replace('Z', '+00:00'))
+        if timestamp.tzinfo is None:
+            raise ValueError('missing timezone')
+        return timestamp.astimezone(timezone.utc)
+    except ValueError:
+        raise MatchError(f"{source}: invalid event.origin_time: {value!r}; provide an ISO 8601 UTC time (e.g. 2017-07-20T22:31:11Z).")
 
 
-def main():
-
-    print("=" * 65)
-    print("GREECE SLIP MODEL DATABASE - BUILD")
-    print("=" * 65)
-
-    # --------------------------------------------------
-    # 1. Load and validate the JSON Schema
-    # --------------------------------------------------
-
-    print("\nLoading schema.json...")
-
-    schema = load_json(SCHEMA_PATH)
-
-    if schema is None:
-        print("\nBuild aborted: unable to load schema.json.")
-        return 1
-
+def _coordinates(event):
+    h = event.get('hypocenter') or {}
     try:
-        Draft202012Validator.check_schema(schema)
-        validator = Draft202012Validator(schema)
+        lat, lon = float(h.get('latitude')), float(h.get('longitude'))
+        if math.isfinite(lat) and math.isfinite(lon) and -90 <= lat <= 90 and -180 <= lon <= 180:
+            return (lat, lon)
+    except (TypeError, ValueError):
+        pass
+    return None
 
-    except Exception as error:
-        print("\nINVALID SCHEMA: schema.json")
-        print(f"  {error}")
-        return 1
 
-    print("Schema loaded successfully.")
+def _haversine(a, b):
+    dlat, dlon = map(math.radians, (b[0] - a[0], b[1] - a[1]))
+    la1, la2 = math.radians(a[0]), math.radians(b[0])
+    h = math.sin(dlat / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin(dlon / 2) ** 2
+    return 2 * 6371.0 * math.asin(min(1.0, math.sqrt(h)))
 
-    # --------------------------------------------------
-    # 2. Find model files
-    # --------------------------------------------------
 
-    if not MODELS_DIR.exists():
-        print(f"\nERROR: Model directory does not exist: {MODELS_DIR}")
-        return 1
-
-    files = sorted(MODELS_DIR.glob("*.json"))
-
-    if not files:
-        print(f"\nNo model files found in {MODELS_DIR}")
-        return 1
-
-    print(f"\nFound {len(files)} JSON model file(s).")
-
-    # --------------------------------------------------
-    # 3. Parse and validate every model
-    # --------------------------------------------------
-
-    models = []
-
-    syntax_errors = 0
-    schema_errors = 0
-    valid_files = 0
-
-    for index, file_path in enumerate(files, start=1):
-
-        print("\n" + "-" * 65)
-        print(
-            f"Checking [{index}/{len(files)}]: "
-            f"{file_path.name}",
-            flush=True
-        )
-
-        # Parse the JSON file.
-        record = load_json(file_path)
-
-        if record is None:
-            syntax_errors += 1
-            continue
-
-        # Validate against schema.json.
-        errors = sorted(
-            validator.iter_errors(record),
-            key=lambda error: (
-                tuple(str(part) for part in error.absolute_path),
-                error.message
-            )
-        )
-
-        if errors:
-            schema_errors += len(errors)
-
-            print(f"\nINVALID SCHEMA: {file_path.name}")
-            print(f"  Found {len(errors)} validation error(s).")
-
-            for error_number, error in enumerate(errors, start=1):
-
-                path = "/".join(
-                    str(part) for part in error.absolute_path
-                ) or "(root)"
-
-                print(
-                    f"  [{error_number}] "
-                    f"at {path}: {error.message}"
-                )
-
-            continue
-
-        # Only valid models are added.
-        models.append(record)
-        valid_files += 1
-
-        print(f"OK: {file_path.name}")
-
-    # --------------------------------------------------
-    # 4. Print validation summary
-    # --------------------------------------------------
-
-    print("\n" + "=" * 65)
-    print("VALIDATION SUMMARY")
-    print("=" * 65)
-
-    print(f"Total model files:       {len(files)}")
-    print(f"Valid model files:       {valid_files}")
-    print(f"Files with syntax errors:{syntax_errors:>5}")
-    print(f"Schema validation errors:{schema_errors:>5}")
-
-    if syntax_errors > 0 or schema_errors > 0:
-
-        print("\nBUILD FAILED.")
-        print("Fix the errors listed above before rebuilding.")
-        print("No new HTML file has been generated.")
-
-        return 1
-
-    # --------------------------------------------------
-    # 5. Check duplicate model IDs
-    # --------------------------------------------------
-
-    ids = [model["model_id"] for model in models]
-
-    counts = Counter(ids)
-
-    duplicates = {
-        model_id: count
-        for model_id, count in counts.items()
-        if count > 1
-    }
-
-    if duplicates:
-
-        print("\nBUILD FAILED: Duplicate model_id values detected.")
-
-        for model_id, count in sorted(duplicates.items()):
-            print(f"  {model_id}: appears {count} times")
-
-        return 1
-
-    print("\nAll model IDs are unique.")
-
-    # --------------------------------------------------
-    # 6. Load HTML template
-    # --------------------------------------------------
-
-    print("\nLoading HTML template...")
-
+def _observation(model, filename):
+    event = model.get('event')
+    if not isinstance(event, dict):
+        raise MatchError(f'{filename}: event object is missing.')
+    dt = _parse_time(event.get('origin_time'), filename)
+    coords = _coordinates(event)
     try:
-        template = TEMPLATE_PATH.read_text(encoding="utf-8")
-
-    except (OSError, UnicodeError) as error:
-        print(f"\nERROR READING TEMPLATE: {error}")
-        return 1
-
-    # Check required placeholders.
-    placeholders = [
-        "__MODELS_JSON__",
-        "__BUILT_AT__",
-        "__MODEL_COUNT__"
-    ]
-
-    missing = [
-        placeholder
-        for placeholder in placeholders
-        if placeholder not in template
-    ]
-
-    if missing:
-        print("\nBUILD FAILED: Missing template placeholders.")
-
-        for placeholder in missing:
-            print(f"  {placeholder}")
-
-        return 1
-
-    # --------------------------------------------------
-    # 7. Generate the website
-    # --------------------------------------------------
-
-    print("\nGenerating website...")
-
-    data_json = json.dumps(
-        models,
-        ensure_ascii=False
-    )
-
-    # Prevent embedded model text from terminating an HTML script tag.
-    data_json = data_json.replace("<", "\\u003c")
-
-    built_at = datetime.date.today().isoformat()
-
-    out = (
-        template
-        .replace("__MODELS_JSON__", data_json)
-        .replace("__BUILT_AT__", built_at)
-        .replace("__MODEL_COUNT__", str(len(models)))
-    )
-
-    # --------------------------------------------------
-    # 8. Save the generated HTML
-    # --------------------------------------------------
-
-    try:
-        DIST_PATH.parent.mkdir(
-            exist_ok=True,
-            parents=True
-        )
-
-        DIST_PATH.write_text(
-            out,
-            encoding="utf-8"
-        )
-
-    except OSError as error:
-        print(f"\nBUILD FAILED: Cannot write output file: {error}")
-        return 1
-
-    # --------------------------------------------------
-    # 9. Final success message
-    # --------------------------------------------------
-
-    event_ids = {
-        model["event"]["event_id"]
-        for model in models
-    }
-
-    print("\n" + "=" * 65)
-    print("BUILD SUCCESSFUL")
-    print("=" * 65)
-
-    print(f"Output: {DIST_PATH}")
-    print(f"Models: {len(models)}")
-    print(f"Distinct earthquakes: {len(event_ids)}")
-
-    print("\nAll models passed JSON syntax and schema validation.")
-    print("The website is ready for deployment.")
-
-    return 0
+        mag = float(event['magnitude'])
+        if not math.isfinite(mag):
+            raise ValueError()
+    except (ValueError, TypeError, KeyError):
+        raise MatchError(f'{filename}: event.magnitude must be a finite number.')
+    return {'origin_time_utc': dt.isoformat().replace('+00:00', 'Z'),
+            'latitude': coords[0] if coords else None,
+            'longitude': coords[1] if coords else None,
+            'magnitude': mag,
+            'name': str(event.get('name') or filename)}
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+def _similarity(o, anchor):
+    a = _parse_time(o['origin_time_utc'], 'observation')
+    b = _parse_time(anchor['origin_time_utc'], 'registry event')
+    seconds = abs((a - b).total_seconds())
+    if seconds > 300:
+        return 'different', seconds, None
