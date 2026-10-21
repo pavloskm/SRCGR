@@ -1,0 +1,519 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "lesvos2017_utkucu_2021",
+  "event": {
+    "event_id": "lesvos2017_06_12",
+    "name": "12 June 2017 Karaburun–Lesvos, northern Aegean Sea, earthquake",
+    "origin_time": "2017-06-12T12:28:38Z",
+    "magnitude": 6.3,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 38.8565,
+      "longitude": 26.3093,
+      "depth_km": 12.0
+    },
+    "faulting_style": "normal",
+    "tectonic_setting": "Lesvos Fault, southern strand of the North Anatolian Fault system in northern Aegean transtension; NW–SE-striking southwest-dipping normal fault.",
+    "region": "Offshore southern Lesvos (Mytilene), Greece and Karaburun Peninsula, Turkey"
+  },
+  "reference": {
+    "authors": [
+      "Murat Utkucu",
+      "Süleyman S. Nalbant",
+      "Ali Pınar",
+      "John McCloskey",
+      "Mairead Nicbhloscaidh",
+      "Fatih Turhan",
+      "Hilal Yalçın",
+      "Serap Kızılbuğa",
+      "Zeynep Coşkun",
+      "Esra Kalkan Ertan",
+      "Levent Gülen"
+    ],
+    "year": 2021,
+    "title": "The June 12, 2017 M6.3 Karaburun-Lesvos earthquake of the Northern Aegean Sea: Aftershock forecasting and stress transfer",
+    "journal": "Tectonophysics 814 (2021), 228945",
+    "doi": "10.1016/j.tecto.2021.228945",
+    "url": "https://doi.org/10.1016/j.tecto.2021.228945"
+  },
+  "inversion": {
+    "data_types": [
+      "teleseismic"
+    ],
+    "method": "Hartzell-Heaton finite-fault, least-squares inversion of 37 teleseismic broadband P-wave velocity records; 8x6 subfaults, spatial regularization and nonnegative slip weighting, multiple overlapping triangular source-time windows. JSON patch slips digitized from Figure 3 using raster color segmentation and mask for contours, gridlines, star and blue stress rectangle.",
+    "green_function_model": "Generalized ray responses through the layered 1D regional velocity model from Özer and Polat (2017), reproduced in Table 2.",
+    "slip_type": "variable",
+    "smoothing_constraint": true,
+    "notes": "FIGURE-DIGITIZED MODEL, NOT THE AUTHORS' ORIGINAL NUMERICAL SUBFAULT SOLUTION. Original inverse problem is a 32 x 24 km fault plane split into 48 square 4 x 4 km subfaults (8 along strike and 6 along dip), Figure 3, page 4, Utkucu et al. (2021). The bottom panel is an ordinary rectangular along-strike/down-dip map; only its upper locator drawing is perspective. All 48 cells of the lower slip panel were reconstructed (the blue rectangle defines a separate Coulomb-stress calculation region and MUST NOT be used as a slip mask). Figure x-axis has 0 at the plotted hypocenter, with NW negative and SE positive by convention; here local along_strike_km is strictly nonnegative 2..30 km from NW to SE, while QA CSV retains the signed plotted x-coordinate. Figure 3 includes a star, dark contours and numeric labels; these and grid lines are excluded using palette matching plus a 6-pixel gridline safety margin. The source color legend provides interval classes 10-20,20-30,30-40,40-50,50-60,60-70,70-80 and >=80 cm, not exact per-cell slip. Color-class representatives 15,25,35,45,55,65,75,85 cm are area averaged across visible pixel cells, with masked annotations omitted. White means below visible 10-cm threshold and is given a 0-m representative for compatibility, NOT a measured exact zero. Values rounded to 0.01 m, and individual patch values are approximations. The cell mean and maximum (including placeholder zero) are reconstructed statistics, while the published unsampled maximum is approximately 0.88-0.90 m near depth 10 km. Model vertical depths are geometric estimates from zero top depth and sin(46°) times down-dip patch-center distance; this interpretation reproduces the 17.25 km lower axis limit. The paper identifies isolated slip patches above 8 km as likely inversion artifacts; those pixels are preserved but flagged in QA rather than removed. Absolute geographic coordinates for each cell are not inferable unambiguously from Figure 3, so patch and segment reference lat/lon are null. Relocated epicenter 38.8565 N,26.3093 E and 12-km inversion hypocenter follow Table 1/Section 2. Figure reports high-slip area concentrated at 8-14 km depth, and majority of seismic moment released from the NW/updip region. Moment 3.47e18 Nm from paper Table 1, not recalculated from digitized values. The rupture has 6 shifted time windows (0.8 s lag) and triangular slip pulses with 0.4 s rise and fall; a uniform 0.4 s fault-wide rise time should NOT be inferred. The upper limit on rupture speed is 3 km/s."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "seg1",
+      "strike_deg": 115.0,
+      "dip_deg": 46.0,
+      "average_rake_deg": -82.0,
+      "length_km": 32.0,
+      "width_km": 24.0,
+      "top_depth_km": 0.0,
+      "reference_point": {
+        "latitude": null,
+        "longitude": null
+      },
+      "patch_grid": {
+        "n_along_strike": 8,
+        "n_down_dip": 6,
+        "patch_length_km": 4.0,
+        "patch_width_km": 4.0
+      },
+      "patches": [
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.08,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.23,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.02,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.07,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.15,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 2.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.439,
+          "slip_m": 0.21,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.01,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.11,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 6.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.316,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.02,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.08,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.06,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.08,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.05,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 10.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 7.193,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.23,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.76,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.77,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.69,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.34,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 14.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 10.071,
+          "slip_m": 0.03,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.17,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.6,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.46,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.23,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.06,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 18.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 12.948,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 2.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.15,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 6.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.02,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 10.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.15,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 14.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.06,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 18.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.05,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 22.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.11,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 26.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        },
+        {
+          "along_strike_km": 30.0,
+          "down_dip_km": 22.0,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 15.825,
+          "slip_m": 0.0,
+          "rake_deg": -82.0
+        }
+      ]
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 0.77,
+    "mean_slip_m": 0.126,
+    "rupture_area_km2": null,
+    "seismic_moment_Nm": 3.47e+18
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Original Figure 3 color legend and bottom fault-plane grid extracted from uploaded Utkucu et al. (2021) PDF; 8x6 4-km cells; palette class area-averaging and overdraw masking; cell QA CSV and visual comparison provided. Figure-digitized NOT original inversion array.",
+    "date_added": "2026-10-21",
+    "license": null,
+    "source_file_url": "https://doi.org/10.1016/j.tecto.2021.228945"
+  }
+}

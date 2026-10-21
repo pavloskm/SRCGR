@@ -1,0 +1,587 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "corinth2021_zahradnik_2022",
+  "event": {
+    "event_id": "corinth2021_02_17",
+    "name": "17 February 2021 Western Corinth Rift, Greece, earthquake (shallow Sub2 slip)",
+    "origin_time": "2021-02-17T03:36:06Z",
+    "magnitude": 5.3,
+    "magnitude_type": "Mw",
+    "hypocenter": {
+      "latitude": 38.36,
+      "longitude": 21.94,
+      "depth_km": 7.9
+    },
+    "faulting_style": "normal",
+    "tectonic_setting": "Western Gulf of Corinth extensional rift; two-stage, conjugate rupture with a weak deep Sub1 in the detachment and main shallow Sub2 on a high-angle south-dipping normal fault, interpreted as a buried segment of the Mornos fault.",
+    "region": "Western Corinth Gulf, near Patras and Aigion, Greece"
+  },
+  "reference": {
+    "authors": [
+      "Jiří Zahradník",
+      "El Madani Aissaoui",
+      "Pascal Bernard",
+      "Pierre Briole",
+      "Simon Bufféral",
+      "Louis De Barros",
+      "Anne Deschamps",
+      "Panagiotis Elias",
+      "Christos P. Evangelidis",
+      "Ioannis Fountoulakis",
+      "František Gallovič",
+      "Vasilis Kapetanidis",
+      "George Kaviris",
+      "Olga-Joan Ktenidou",
+      "Sophie Lambotte",
+      "Olivier Lengliné",
+      "Helene Lyon-Caen",
+      "Mark Noble",
+      "Vladimír Plicka",
+      "Alexis Rigo",
+      "Zafeiria Roumelioti",
+      "Anna Serpetsidaki",
+      "Efthimios Sokos",
+      "Nicholas Voulgaris"
+    ],
+    "year": 2022,
+    "title": "An Atypical Shallow Mw 5.3, 2021 Earthquake in the Western Corinth Rift (Greece)",
+    "journal": "Journal of Geophysical Research: Solid Earth, 127, e2022JB024221",
+    "doi": "10.1029/2022JB024221",
+    "url": "https://doi.org/10.1029/2022JB024221"
+  },
+  "inversion": {
+    "data_types": [
+      "strong_motion",
+      "other"
+    ],
+    "method": "Sub2 slip inversion from apparent source time functions (ASTFs) estimated via empirical Green functions of regional seismic waveforms, followed by finite-fault inversion (Mori-Hartzell method with Dreger STF code); reconstruction of perspective Figure 3b by projective rectification and colorbar sampling.",
+    "green_function_model": "Empirical Green function from nearby Mw 4.2 foreshock, combined with ASTF inversion. Not a geodetic-only model.",
+    "slip_type": "variable",
+    "smoothing_constraint": null,
+    "notes": "FIGURE-DIGITIZED PARTIAL MODEL, not released original inversion coefficients. The event has TWO subevents; the displayed Figure 3b scalar slip grid concerns ONLY the shallow south-dipping Sub2, not the early deep weak Sub1 (for which no comparable distributed-slip panel is published). The original EGF ASTF inversion employed 19 x 15 km uniform 1 x 1 km subfaults (285 cells); Figure 3b is explicitly labeled as a 9 x 6 km perspective view of the shallow slip patch (54 visible 1 x 1 km cells). We export ONLY the 54 cells visible in the illustrated panel, not 285 invented cells. Corners were digitized on the original embedded JPEG and a homography was used to rectify perspective onto a 9x6 regular image. Printed colorbar 0-27 cm is mapped to pixel color with robust interior cell sampling and a heuristic correction to translucent ground-surface shading in first two rows. Black contours, hypocenter star H (outside plane), epicenter E, schematic arrow, formal shallow Sub2 initiation marker, depth text, and gray gridlines do NOT represent scalar slip. Color overlays and gradients make especially the shallow rows approximate. Orange colorbar background maps to approx 1-2 cm; values below 2.5 cm assigned 0 in JSON as a ZERO-COMPATIBLE background convention, NOT measured zero. Slip rounded to 0.01 m, do not infer higher precision. Several cell estimates have lower confidence; inspect companion CSV for raw values and flags. Published mean ~15 cm refers to the inferred shallow slip patch (Figure 3b), NOT mean of 9x6 display plane. Figure colorbar maximum 27 cm, not a confirmed reported inversion maximum. According to paper 2 slip maxima may be an artifact from weak deep Sub1. Paper hypocenter depth 7.9 km belongs to the initial deeper event; small Sub2 shallow initiation is assumed at 2.5 km (not independently validated). South-dipping plane rake/strike/dip values 103/58/-81 come from conjugate CMT plane and the trial model in section 5, and should be viewed as representative, not independently constrained slip rake for every cell. Upper illustrated fault boundary approximated at 0 km vertical depth for patch depths inferred using dip; figure states Sub2 slip 0-5.5 km deep. Local figure cannot independently establish patch geographic latitude/longitude; leave null. Empirical Green function ASTF best-fitting rupture velocity Vr=2.7 km/s and rise time 1.0 s in the initial gridding analysis, VR~0.94. Copyright AGU; no license inferred."
+  },
+  "fault_segments": [
+    {
+      "segment_id": "sub2_shallow_displayed",
+      "strike_deg": 103.0,
+      "dip_deg": 58.0,
+      "average_rake_deg": -81.0,
+      "length_km": 9.0,
+      "width_km": 6.0,
+      "top_depth_km": 0.0,
+      "reference_point": {
+        "latitude": null,
+        "longitude": null
+      },
+      "patch_grid": {
+        "n_along_strike": 9,
+        "n_down_dip": 6,
+        "patch_length_km": 1.0,
+        "patch_width_km": 1.0
+      },
+      "patches": [
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.18,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.19,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.18,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 0.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 0.424,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.19,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.04,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 1.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 1.272,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.07,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.07,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.15,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.16,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.12,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 2.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.12,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.12,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.19,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.16,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.12,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.12,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.06,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 3.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 2.968,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.21,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.27,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.14,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.05,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.05,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 4.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 3.816,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 0.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 1.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 2.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.1,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 3.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.1,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 4.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.04,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 5.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 6.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 7.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        },
+        {
+          "along_strike_km": 8.5,
+          "down_dip_km": 5.5,
+          "latitude": null,
+          "longitude": null,
+          "depth_km": 4.664,
+          "slip_m": 0.0,
+          "rake_deg": -81.0
+        }
+      ]
+    }
+  ],
+  "summary_metrics": {
+    "max_slip_m": 0.27,
+    "mean_slip_m": 0.0756,
+    "rupture_area_km2": null,
+    "seismic_moment_Nm": null
+  },
+  "model_variant": {
+    "phase": "coseismic"
+  },
+  "provenance": {
+    "compiled_by": "Figure 3b of Zahradník et al. (2022), perspective rectification and colorbar digitization of 9x6 km shallow Sub2 graphic; QA CSV contains per-cell confidence and color measurements. NOT the full 19x15 km inversion plane or Sub1 point-source model.",
+    "date_added": "2026-10-21",
+    "license": null,
+    "source_file_url": "https://doi.org/10.1029/2022JB024221"
+  }
+}
