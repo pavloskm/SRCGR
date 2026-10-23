@@ -14463,7 +14463,7 @@
   ],
   "summary_metrics": {
     "max_slip_m": 2.7,
-    "mean_slip_m": null,
+    "mean_slip_m": 0.31033125,
     "rupture_area_km2": null,
     "seismic_moment_Nm": 2.542e+19,
     "published_max_slip_m": 2.7,
