@@ -33,11 +33,11 @@
     "data_types": [
       "other"
     ],
-    "method": "Empirical Green’s function deconvolution of regional broadband horizontal-component waveforms, inversion of source-time functions on a 25 x 25 1-km-square fault mesh. Nonnegative slip weights with spatial first-derivative smoothing; rupture velocity 2.7 km/s and rise time 0.4 s (Figure 5).",
+    "method": "Empirical Green’s function deconvolution of regional broadband horizontal-component waveforms, inversion of source-time functions on a 25 x 25 1-km-square fault mesh.",
     "green_function_model": "Empirical Green’s function: M4.5 aftershock at 20:32:27 UTC on 7 September 1999, with waveforms from regional stations; fault-plane ray paths approximated in a half-space.",
     "slip_type": "variable",
     "smoothing_constraint": true,
-    "notes": "FIGURE-DIGITIZED GRAYSCALE, NOT PUBLISHED NUMERIC PATCH DATA. Figure 5, PDF page 6, has a 25 x 25 regular 1-km grid (625 cells) with along-strike axis NW to SE and negative down-dip plotting coordinate (0 to -25 km). The grayscale legend shows 10-cm slip intervals (0-10 through 90-100 cm), and black contours every 10 cm. The PDF was rendered at 3x, sampled at each 1km cell center with median filtering to reduce 1px black ink and a 60th-percentile local tone. Colored gray-class midpoint representatives (e.g. 60-70cm -> 0.65m) are not original coefficients. White background cannot distinguish exactly 0 from the 0-10cm class; its 0.0m entries mean below identifiable printed resolution, NOT measured zero. A black hypocenter star near along-strike 13km/down-dip 11km, solid slip-contours, dashed 5-km guides, labels, and dotted bounding rectangles impair some cell estimates; quality flags and sample grayscale values appear in the QA CSV. The paper reports a peak ~0.95m near hypocenter, average ~0.16m over activated area, and moment 9.22e17 Nm. The reconstructed 1km cell sample maximum and mean are separate image estimates; peak can be underestimated due to contour overlays, discrete sampling, and image resolution. Strike/dip/rake 105/55/-80 are borrowed from the Papadimitriou et al. (2000) nodal-plane solution listed in paper Table 1, rather than uniquely established by the printed slip panel. The paper fixes the hypocenter at depth 8km. The JSON top_depth_km=0 is a figure-coordinate convention because the displayed top row is at down-dip=0, not a separately demonstrated physical fault-top depth; cell absolute depths are approximate projections with dip 55deg. Per-patch latitude/longitude cannot be established from this fault-local panel and are null."
+    "notes": "FIGURE-DIGITIZED GRAYSCALE, NOT PUBLISHED NUMERIC PATCH DATA."
   },
   "fault_segments": [
     {
