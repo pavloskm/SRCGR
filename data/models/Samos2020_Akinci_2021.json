@@ -13,7 +13,7 @@
       "depth_km": 16.0
     },
     "faulting_style": "normal",
-    "tectonic_setting": "Offshore NNE-dipping normal fault north of Samos, eastern Aegean back-arc extension.",
+    "tectonic_setting": "Eastern Aegean back-arc extension.",
     "region": "Samos Island–İzmir, eastern Aegean Sea, Greece and Türkiye"
   },
   "reference": {
@@ -33,11 +33,11 @@
       "InSAR",
       "GPS_static"
     ],
-    "method": "Joint geodetic inversion of Sentinel-1 ascending/descending InSAR LOS deformation and static GPS offsets using positivity-constrained weighted least squares and Laplacian smoothing. Geometry grid search across position, strike, dip and rake. Figure 4a is the preferred variable-slip model.",
+    "method": "Joint geodetic inversion of InSAR LOS deformation and static GPS offsets using positivity-constrained weighted least squares and Laplacian smoothing.",
     "green_function_model": "Okada (1985) rectangular dislocations in an elastic homogeneous isotropic half-space.",
     "slip_type": "variable",
     "smoothing_constraint": true,
-    "notes": "FIGURE-DIGITIZED, NOT ORIGINAL AUTHOR COEFFICIENTS. Figure 4a, printed page 4752 (PDF page 8), contains 20 columns × 10 rows of 2.5 km square patches over a 50×25 km N285°E strike, NNE-dipping 38° fault, with rake −80°. Published peak slip is described as about 2.5–3.0 m, published geodetic moment 3.3e19 Nm. The source paper does NOT supply numerical patch slip or a precisely located top-of-fault depth: top_depth_km=0.0 is a schematic display datum consistent with the cross-section, not a reported plane-top measurement; patch depths assume a planar geometry. Figure 4a is a plan/map perspective. The slip image was rectified using its rectangular corners to restore the ORIGINAL 20×10 lattice. Along-strike is measured from the EAST end toward WNW (positive strike 285°), and down-dip increases NNE from the shallow SOUTH edge. The map is a surface projection; reversing both display axes is essential to recover this geometry. Slip estimated from a 0–300 cm discrete colorbar by robust sampling, masking green aftershocks, grey slip arrows, colored hypocenter/aftershock stars, red mapped trace and black strokes. Two heavily obscured cells are interpolated and explicitly flagged in the companion QA CSV (r0c9, r5c9). Background pale-yellow cells are colorbar-near-zero compatible, but not reliable measurements of zero. Digitization resolution is coarse (commonly order 0.15–0.30 m or larger in obscured regions). This JSON uses nominal constant rake per paper geometry and cannot recover any subcell rake variation. Event origin time was aligned with an existing Samos catalogue record for automatic event grouping; hypocenter coordinates 37.888°N, 26.777°E correspond to the AFAD location convention and depth 16 km is the AFAD value used in Table 3. "
+    "notes": "FIGURE-DIGITIZED, NOT ORIGINAL AUTHOR COEFFICIENTS."
   },
   "fault_segments": [
     {
